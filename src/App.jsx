@@ -3,22 +3,28 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import Searcher from './components/Searcher'
 import SearchResults from './components/SearchResults'
+import recetas from './recipes.json'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [user, setUser] = useState(null)
+  // 🔥 filtrar recetas según usuario
+  const recetasFiltradas = user
+    ? recetas.filter(r => r.id_usuario === user.id_usuario)
+    : recetas
 
   return (
     <>
-      <Header />
-      <Searcher/>
-      <SearchResults results={[]} query="" featured={[
-        { key: 1, nombre: "Receta Destacada 1" },
-        { key: 2, nombre: "Receta Destacada 2" },
-        { key: 3, nombre: "Receta Destacada 3" },
-      ]} />
-      
-      <Footer />
+      <Header onLogin={setUser} />
 
+      <Searcher />
+
+      <SearchResults 
+        results={[]} 
+        query="" 
+        featured={recetasFiltradas}
+      />
+
+      <Footer />
     </>
   )
 }

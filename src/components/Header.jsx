@@ -1,5 +1,6 @@
 import { ChefHat } from "lucide-react"
 import { User2Icon } from "lucide-react"
+import UserMenu from "./UserMenu";
 
 function Header() {
   return (
@@ -16,9 +17,7 @@ function Header() {
          {/* Por si hay que añadir elementos al navbar*/}
         </ul>
 
-        <button className = "user-btn navbar-select">
-          <User2Icon className = "user-icon" size={28}/>
-        </button>
+        <UserMenu />
       </nav>
     </header>
   )
