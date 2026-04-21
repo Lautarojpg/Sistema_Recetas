@@ -1,20 +1,24 @@
 function RecipeCard({ recipe }) {
   return (
     <li className="recipe-card">
-      <img 
-        src={recipe.imagen} 
-        alt={recipe.nombre} 
-        className="recipe-img"
-      />
+        <div className="recipe-name">
+            <h3>{recipe.nombre}</h3>
+            <p>{recipe.descripcion}</p>
+        </div>
+        <img 
+            src={recipe.imagen} 
+            alt={recipe.nombre} 
+            className="recipe-img"
+        />
+        <div className="recipe-info">
+            
+            
 
-      <div className="recipe-info">
-        <h4>{recipe.nombre}</h4>
-        <p>{recipe.descripcion}</p>
-
+            
+        </div>
         <button className="recipe-btn">
-          Ver receta
+            Ver
         </button>
-      </div>
     </li>
   );
 }

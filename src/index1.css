@@ -315,9 +315,10 @@ header {
 
 /* CONTENEDOR GENERAL */
 .search-results {
+  padding: 0px 20px 40px 40px;
   width: 100%;
   margin: 0 auto;
-  margin-left: 20px;
+  margin-left: 0px;
 }
 
 /* TEXTO (resultados encontrados / destacados) */
@@ -331,13 +332,13 @@ header {
   margin: 15px 0 10px;
   font-size: 24px;
   border-bottom: 1px solid #110a0342;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
 }
 
 /* GRID DE RECETAS */
 .results-grid {
   margin-top: 20px;
-  margin-left: 60px;
+  margin-left: 0px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 120px;

@@ -1,0 +1,231 @@
+[
+  {
+    "id_receta": 1,
+    "nombre_receta": "Pancakes",
+    "descripcion": "Deliciosos pancakes esponjosos",
+    "tiempo_total": 15,
+    "dificultad": "Fácil",
+    "porcion": 4,
+    "imagen": "/img/pancakes.jpg",
+    "instrucciones": "Mezclar ingredientes y cocinar en sartén.",
+    "id_usuario": 1,
+    "id_coccion": 1,
+    "id_etiqueta": 5,
+    "info_nutricional": {
+      "proteinas_totales": 10,
+      "grasas_totales": 5,
+      "carbs_totales": 40,
+      "aporte_calorico_total": 350
+    },
+    "ingredientes": [
+      { "id_ingrediente": 1, "nombre": "Harina", "cantidad": 200, "unidad": "g" },
+      { "id_ingrediente": 2, "nombre": "Leche", "cantidad": 300, "unidad": "ml" }
+    ]
+  },
+  {
+    "id_receta": 2,
+    "nombre_receta": "Ensalada César",
+    "descripcion": "Ensalada fresca con pollo",
+    "tiempo_total": 20,
+    "dificultad": "Fácil",
+    "porcion": 2,
+    "imagen": "/img/cesar.jpg",
+    "instrucciones": "Mezclar ingredientes y servir.",
+    "id_usuario": 1,
+    "id_coccion": 2,
+    "id_etiqueta": 2,
+    "info_nutricional": {
+      "proteinas_totales": 15,
+      "grasas_totales": 10,
+      "carbs_totales": 8,
+      "aporte_calorico_total": 250
+    },
+    "ingredientes": [
+      { "id_ingrediente": 3, "nombre": "Lechuga", "cantidad": 1, "unidad": "unidad" },
+      { "id_ingrediente": 4, "nombre": "Pollo", "cantidad": 200, "unidad": "g" }
+    ]
+  },
+  {
+    "id_receta": 3,
+    "nombre_receta": "Hamburguesa",
+    "descripcion": "Hamburguesa con carne y queso",
+    "tiempo_total": 30,
+    "dificultad": "Fácil",
+    "porcion": 1,
+    "imagen": "/img/burger.jpg",
+    "instrucciones": "Cocinar carne y armar.",
+    "id_usuario": 1,
+    "id_coccion": 1,
+    "id_etiqueta": 1,
+    "info_nutricional": {
+      "proteinas_totales": 25,
+      "grasas_totales": 20,
+      "carbs_totales": 30,
+      "aporte_calorico_total": 500
+    },
+    "ingredientes": [
+      { "id_ingrediente": 5, "nombre": "Carne", "cantidad": 150, "unidad": "g" },
+      { "id_ingrediente": 6, "nombre": "Pan", "cantidad": 1, "unidad": "unidad" }
+    ]
+  },
+  {
+    "id_receta": 4,
+    "nombre_receta": "Pasta Alfredo",
+    "descripcion": "Pasta con salsa cremosa",
+    "tiempo_total": 25,
+    "dificultad": "Media",
+    "porcion": 3,
+    "imagen": "/img/pasta.jpg",
+    "instrucciones": "Cocinar pasta y mezclar con salsa.",
+    "id_usuario": 1,
+    "id_coccion": 1,
+    "id_etiqueta": 3,
+    "info_nutricional": {
+      "proteinas_totales": 18,
+      "grasas_totales": 22,
+      "carbs_totales": 60,
+      "aporte_calorico_total": 550
+    },
+    "ingredientes": [
+      { "id_ingrediente": 7, "nombre": "Pasta", "cantidad": 300, "unidad": "g" },
+      { "id_ingrediente": 8, "nombre": "Crema", "cantidad": 200, "unidad": "ml" }
+    ]
+  },
+  {
+    "id_receta": 5,
+    "nombre_receta": "Tacos",
+    "descripcion": "Tacos mexicanos",
+    "tiempo_total": 35,
+    "dificultad": "Media",
+    "porcion": 4,
+    "imagen": "/img/tacos.jpg",
+    "instrucciones": "Preparar relleno y servir en tortillas.",
+    "id_usuario": 1,
+    "id_coccion": 1,
+    "id_etiqueta": 4,
+    "info_nutricional": {
+      "proteinas_totales": 22,
+      "grasas_totales": 18,
+      "carbs_totales": 40,
+      "aporte_calorico_total": 450
+    },
+    "ingredientes": [
+      { "id_ingrediente": 9, "nombre": "Tortilla", "cantidad": 4, "unidad": "unidad" },
+      { "id_ingrediente": 5, "nombre": "Carne", "cantidad": 200, "unidad": "g" }
+    ]
+  },
+  {
+    "id_receta": 6,
+    "nombre_receta": "Sopa de verduras",
+    "descripcion": "Sopa saludable",
+    "tiempo_total": 40,
+    "dificultad": "Fácil",
+    "porcion": 4,
+    "imagen": "/img/sopa.jpg",
+    "instrucciones": "Hervir verduras.",
+    "id_usuario": 1,
+    "id_coccion": 2,
+    "id_etiqueta": 2,
+    "info_nutricional": {
+      "proteinas_totales": 5,
+      "grasas_totales": 3,
+      "carbs_totales": 15,
+      "aporte_calorico_total": 120
+    },
+    "ingredientes": [
+      { "id_ingrediente": 10, "nombre": "Zanahoria", "cantidad": 2, "unidad": "unidad" },
+      { "id_ingrediente": 11, "nombre": "Papa", "cantidad": 2, "unidad": "unidad" }
+    ]
+  },
+  {
+    "id_receta": 7,
+    "nombre_receta": "Milanesa",
+    "descripcion": "Milanesa frita",
+    "tiempo_total": 30,
+    "dificultad": "Fácil",
+    "porcion": 2,
+    "imagen": "/img/milanesa.jpg",
+    "instrucciones": "Empanar y freír.",
+    "id_usuario": 1,
+    "id_coccion": 3,
+    "id_etiqueta": 1,
+    "info_nutricional": {
+      "proteinas_totales": 30,
+      "grasas_totales": 25,
+      "carbs_totales": 20,
+      "aporte_calorico_total": 600
+    },
+    "ingredientes": [
+      { "id_ingrediente": 5, "nombre": "Carne", "cantidad": 300, "unidad": "g" },
+      { "id_ingrediente": 12, "nombre": "Pan rallado", "cantidad": 100, "unidad": "g" }
+    ]
+  },
+  {
+    "id_receta": 8,
+    "nombre_receta": "Omelette",
+    "descripcion": "Omelette rápido",
+    "tiempo_total": 10,
+    "dificultad": "Fácil",
+    "porcion": 1,
+    "imagen": "/img/omelette.jpg",
+    "instrucciones": "Batir huevos y cocinar.",
+    "id_usuario": 1,
+    "id_coccion": 1,
+    "id_etiqueta": 2,
+    "info_nutricional": {
+      "proteinas_totales": 12,
+      "grasas_totales": 10,
+      "carbs_totales": 2,
+      "aporte_calorico_total": 180
+    },
+    "ingredientes": [
+      { "id_ingrediente": 13, "nombre": "Huevo", "cantidad": 2, "unidad": "unidad" }
+    ]
+  },
+  {
+    "id_receta": 9,
+    "nombre_receta": "Panqueques",
+    "descripcion": "Panqueques dulces",
+    "tiempo_total": 20,
+    "dificultad": "Fácil",
+    "porcion": 3,
+    "imagen": "/img/panqueques.jpg",
+    "instrucciones": "Mezclar y cocinar en sartén.",
+    "id_usuario": 1,
+    "id_coccion": 1,
+    "id_etiqueta": 5,
+    "info_nutricional": {
+      "proteinas_totales": 8,
+      "grasas_totales": 7,
+      "carbs_totales": 35,
+      "aporte_calorico_total": 300
+    },
+    "ingredientes": [
+      { "id_ingrediente": 1, "nombre": "Harina", "cantidad": 200, "unidad": "g" },
+      { "id_ingrediente": 13, "nombre": "Huevo", "cantidad": 2, "unidad": "unidad" }
+    ]
+  },
+  {
+    "id_receta": 10,
+    "nombre_receta": "Arroz con pollo",
+    "descripcion": "Plato clásico",
+    "tiempo_total": 45,
+    "dificultad": "Media",
+    "porcion": 4,
+    "imagen": "/img/arrozpollo.jpg",
+    "instrucciones": "Cocinar arroz con pollo.",
+    "id_usuario": 1,
+    "id_coccion": 1,
+    "id_etiqueta": 1,
+    "info_nutricional": {
+      "proteinas_totales": 20,
+      "grasas_totales": 10,
+      "carbs_totales": 45,
+      "aporte_calorico_total": 420
+    },
+    "ingredientes": [
+      { "id_ingrediente": 14, "nombre": "Arroz", "cantidad": 300, "unidad": "g" },
+      { "id_ingrediente": 4, "nombre": "Pollo", "cantidad": 300, "unidad": "g" }
+    ]
+  }
+]
