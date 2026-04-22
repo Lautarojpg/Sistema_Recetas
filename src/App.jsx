@@ -9,6 +9,12 @@ function App() {
   const [recetas, setRecetas] = useState([]);
   const [featured, setFeatured] = useState([]);
 
+  const [user, setUser] = useState(null)
+  // 🔥 filtrar recetas según usuario
+{*/ recetasFiltradas = user
+    ? recetas.filter(r => r.id_usuario === user.id_usuario)
+    : recetas*/}
+
   const handleSearch = (results, searchQuery) => {
     setRecetas(results);
     setQuery(searchQuery);
@@ -16,11 +22,11 @@ function App() {
 
   return (
     <>
-      <Header />
+      <Header onLogin={setUser} />
       <Searcher onSearch={handleSearch}  />
       <SearchResults results={recetas} query={query} featured={featured} />
-      
       <Footer />
+
 
     </>
   )

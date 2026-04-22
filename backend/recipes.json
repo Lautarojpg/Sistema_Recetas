@@ -31,7 +31,7 @@
     "porcion": 2,
     "imagen": "/recipes-icons/cesar.webp",
     "instrucciones": "Mezclar ingredientes y servir.",
-    "id_usuario": 1,
+    "id_usuario": 2,
     "id_coccion": 2,
     "id_etiqueta": 2,
     "info_nutricional": {
@@ -54,7 +54,7 @@
     "porcion": 1,
     "imagen": "/recipes-icons/hamburguesa.webp",
     "instrucciones": "Cocinar carne y armar.",
-    "id_usuario": 1,
+    "id_usuario": 3,
     "id_coccion": 1,
     "id_etiqueta": 1,
     "info_nutricional": {
@@ -100,7 +100,7 @@
     "porcion": 4,
     "imagen": "/recipes-icons/tacos.webp",
     "instrucciones": "Preparar relleno y servir en tortillas.",
-    "id_usuario": 1,
+    "id_usuario": 2,
     "id_coccion": 1,
     "id_etiqueta": 4,
     "info_nutricional": {
@@ -123,7 +123,7 @@
     "porcion": 4,
     "imagen": "/recipes-icons/sopa.webp",
     "instrucciones": "Hervir verduras.",
-    "id_usuario": 1,
+    "id_usuario": 3,
     "id_coccion": 2,
     "id_etiqueta": 2,
     "info_nutricional": {
@@ -169,7 +169,7 @@
     "porcion": 1,
     "imagen": "/recipes-icons/omelette.webp",
     "instrucciones": "Batir huevos y cocinar.",
-    "id_usuario": 1,
+    "id_usuario": 2,
     "id_coccion": 1,
     "id_etiqueta": 2,
     "info_nutricional": {
