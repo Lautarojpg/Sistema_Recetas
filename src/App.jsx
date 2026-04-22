@@ -32,7 +32,7 @@ function App() {
   // Traer recetas destacadas
 
   useEffect(() => {
-  const fetchFeatured = async () => {
+  const BuscarDestacadas = async () => {
     try {
       const res = await fetch("http://localhost:3000/api/recetas/destacadas");
 
@@ -46,7 +46,7 @@ function App() {
     }
   };
 
-  fetchFeatured();
+  BuscarDestacadas();
 }, []);
 
 
@@ -55,7 +55,7 @@ function App() {
     setQuery(searchQuery);
   };
 
- const fetchUserRecipes = async (userId) => {
+ const BuscarRecetasUsuario = async (userId) => {
     try {
       const res = await fetch(`http://localhost:3000/api/recetas/usuario/${userId}`);
       const data = await res.json();
@@ -69,7 +69,7 @@ function App() {
   const id = user?.id_usuario;
   if (!id) return;
 
-  fetchUserRecipes(id);
+  BuscarRecetasUsuario(id);
 }, [user?.id_usuario]);
 
 

@@ -5,8 +5,6 @@ function SearchResults({ results, query, featured, userRecipes, user }) {
   const hasQuery = query && query.trim() !== "";
   const hasResults = results && results.length > 0;
   const isLoggedIn = user !== null;
-  console.log('user:', user);
-  console.log("USER RECIPES:", userRecipes);
 
   return (
     <div className="search-results">
