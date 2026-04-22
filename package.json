@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
     "lucide-react": "^1.8.0",
     "nvm": "^0.0.4",
     "react": "^19.2.4",
@@ -33,5 +35,18 @@
     "postcss": "^8.5.10",
     "tailwindcss": "^4.2.2",
     "vite": "^8.0.4"
-  }
+  },
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lautarojpg/Sistema_Recetas.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lautarojpg/Sistema_Recetas/issues"
+  },
+  "homepage": "https://github.com/Lautarojpg/Sistema_Recetas#readme"
 }

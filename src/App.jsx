@@ -5,17 +5,20 @@ import Searcher from './components/Searcher'
 import SearchResults from './components/SearchResults'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [query, setQuery] = useState("");
+  const [recetas, setRecetas] = useState([]);
+  const [featured, setFeatured] = useState([]);
+
+  const handleSearch = (results, searchQuery) => {
+    setRecetas(results);
+    setQuery(searchQuery);
+  };
 
   return (
     <>
       <Header />
-      <Searcher/>
-      <SearchResults results={[]} query="" featured={[
-        { key: 1, nombre: "Receta Destacada 1" },
-        { key: 2, nombre: "Receta Destacada 2" },
-        { key: 3, nombre: "Receta Destacada 3" },
-      ]} />
+      <Searcher onSearch={handleSearch}  />
+      <SearchResults results={recetas} query={query} featured={featured} />
       
       <Footer />
 

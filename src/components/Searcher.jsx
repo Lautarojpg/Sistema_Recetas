@@ -1,6 +1,6 @@
 import SearchBar from "./SearchBar"
 
-function Searcher() {
+function Searcher( { onSearch } ) {
     return (
         <section id="searcher-container">
         <div className="searcher-content">
@@ -10,7 +10,7 @@ function Searcher() {
                 Busca tus ingredientes, elige tu tipo de comida o simplemente explora nuestras recetas destacadas. ¡Cocinar nunca ha sido tan fácil y delicioso!
                 </p>
             </div>
-          <SearchBar />
+          <SearchBar onSearch={onSearch} />
         </div>
         
         

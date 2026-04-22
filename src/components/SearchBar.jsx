@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { SearchIcon } from "lucide-react";
 
-function SearchBar() {
+function SearchBar( {onSearch}) {
   const [search, setSearch] = useState("");
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-    console.log("Buscando:", search);
+    try {
+    const response = await fetch(`http://localhost:3000/api/recetas?q=${search}`);
+    const results = await response.json();
+    onSearch(results, search);
+    } catch (error) {
+      console.error("Error al buscar recetas:", error);
+    }
   };
 
   return (
