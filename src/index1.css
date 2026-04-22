@@ -595,3 +595,29 @@ header {
 .recipe-section h2 {
   margin-bottom: 10px;
 }
+
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  list-style: none;
+}
+
+#crear-receta-btn button {
+  background:none;
+  color: white;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+#crear-receta-btn button:hover {
+  color: var(--primary-dark);
+}
+

@@ -8,44 +8,95 @@ export default function RegisterForm({ onClose }) {
     password: ""
   });
 
+  const [errors, setErrors] = useState({});
+
+  // 🔹 Validaciones
+  const validate = () => {
+    const newErrors = {};
+
+    if (!form.nombre.trim()) {
+      newErrors.nombre = "El nombre es obligatorio";
+    }
+
+    if (!form.apellido.trim()) {
+      newErrors.apellido = "El apellido es obligatorio";
+    }
+
+    if (!form.email.trim()) {
+      newErrors.email = "El email es obligatorio";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      newErrors.email = "Email inválido";
+    }
+
+    if (!form.password) {
+      newErrors.password = "La contraseña es obligatoria";
+    } else if (form.password.length < 6) {
+      newErrors.password = "Mínimo 6 caracteres";
+    }
+
+    return newErrors;
+  };
+
+  // 🔹 Change
   const handleChange = (e) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value
     });
+
+    // opcional: limpiar error al escribir
+    setErrors({
+      ...errors,
+      [e.target.name]: ""
+    });
   };
 
+  // 🔹 Submit
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const res = await fetch("http://localhost:3000/api/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(form)
-    });
+    const validationErrors = validate();
 
-    const data = await res.json();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return; // ❌ no envía
+    }
 
-    alert("Usuario creado correctamente");
-    onClose();
+    try {
+      const res = await fetch("http://localhost:3000/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(form)
+      });
 
-  } catch (err) {
-    console.error(err);
-  }
-};
+      if (!res.ok) throw new Error("Error en API");
+
+      alert("Usuario creado correctamente");
+      onClose();
+
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div style={styles.overlay}>
       <form style={styles.form} onSubmit={handleSubmit}>
         <h3>Registrarse</h3>
 
-        <input name="nombre" placeholder="Nombre" onChange={handleChange} required />
-        <input name="apellido" placeholder="Apellido" onChange={handleChange} required />
-        <input name="email" placeholder="Email" onChange={handleChange} required />
-        <input name="password" type="password" placeholder="Contraseña" onChange={handleChange} required />
+        <input name="nombre" placeholder="Nombre" onChange={handleChange} />
+        {errors.nombre && <span style={styles.error}>{errors.nombre}</span>}
+
+        <input name="apellido" placeholder="Apellido" onChange={handleChange} />
+        {errors.apellido && <span style={styles.error}>{errors.apellido}</span>}
+
+        <input name="email" placeholder="Email" onChange={handleChange} />
+        {errors.email && <span style={styles.error}>{errors.email}</span>}
+
+        <input name="password" type="password" placeholder="Contraseña" onChange={handleChange} />
+        {errors.password && <span style={styles.error}>{errors.password}</span>}
 
         <button type="submit">Guardar</button>
         <button type="button" onClick={onClose}>Cancelar</button>
@@ -73,7 +124,11 @@ const styles = {
     borderRadius: "10px",
     display: "flex",
     flexDirection: "column",
-    gap: "10px",
+    gap: "5px",
     width: "300px"
+  },
+  error: {
+    color: "red",
+    fontSize: "12px"
   }
 };

@@ -2,8 +2,9 @@ import { ChefHat } from "lucide-react"
 import { User2Icon } from "lucide-react"
 import UserMenu from "./UserMenu";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-function Header( {onLogin, user}  ) {
+function Header( {onLogin, user, onOpenRecipe}  ) {
   const navigate = useNavigate();
   return (
     <header>
@@ -16,7 +17,9 @@ function Header( {onLogin, user}  ) {
         </div>
 
         <ul className="nav-links">
-         {/* Por si hay que añadir elementos al navbar*/}
+          <li id="crear-receta-btn">
+            <button onClick={onOpenRecipe}>Crear receta</button>
+          </li>
         </ul>
 
         <UserMenu onLogin={onLogin} user={user} />

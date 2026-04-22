@@ -6,6 +6,7 @@ import SearchResults from './components/SearchResults'
 
 import { Routes, Route } from "react-router-dom";
 import RecipePage from "./pages/RecipePage";
+import RecipeForm from './components/RecipeForm';
 
 function App() {
   const [query, setQuery] = useState("");
@@ -13,6 +14,7 @@ function App() {
   const [featured, setFeatured] = useState([]);
   const [user, setUser] = useState(null)
   const [userRecipes, setUserRecipes] = useState([]);
+  const [showRecipeForm, setShowRecipeForm] = useState(false);
 
   //  Persistencia de sesión
 
@@ -75,7 +77,10 @@ function App() {
 
   return (
     <>
-      <Header onLogin={setUser} user={user} />
+      <Header onLogin={setUser} user={user} onOpenRecipe={() => setShowRecipeForm(true)}   />
+      {showRecipeForm && (
+        <RecipeForm onClose={() => setShowRecipeForm(false)} /> 
+      )}        
 
       <Routes>
         <Route path="/" element={

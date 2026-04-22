@@ -18,8 +18,18 @@
       "aporte_calorico_total": 350
     },
     "ingredientes": [
-      { "id_ingrediente": 1, "nombre": "Harina", "cantidad": 200, "unidad": "g" },
-      { "id_ingrediente": 2, "nombre": "Leche", "cantidad": 300, "unidad": "ml" }
+      {
+        "id_ingrediente": 1,
+        "nombre": "Harina",
+        "cantidad": 200,
+        "unidad": "g"
+      },
+      {
+        "id_ingrediente": 2,
+        "nombre": "Leche",
+        "cantidad": 300,
+        "unidad": "ml"
+      }
     ],
     "destacada": true
   },
@@ -42,8 +52,18 @@
       "aporte_calorico_total": 250
     },
     "ingredientes": [
-      { "id_ingrediente": 3, "nombre": "Lechuga", "cantidad": 1, "unidad": "unidad" },
-      { "id_ingrediente": 4, "nombre": "Pollo", "cantidad": 200, "unidad": "g" }
+      {
+        "id_ingrediente": 3,
+        "nombre": "Lechuga",
+        "cantidad": 1,
+        "unidad": "unidad"
+      },
+      {
+        "id_ingrediente": 4,
+        "nombre": "Pollo",
+        "cantidad": 200,
+        "unidad": "g"
+      }
     ],
     "destacada": true
   },
@@ -66,8 +86,18 @@
       "aporte_calorico_total": 500
     },
     "ingredientes": [
-      { "id_ingrediente": 5, "nombre": "Carne", "cantidad": 150, "unidad": "g" },
-      { "id_ingrediente": 6, "nombre": "Pan", "cantidad": 1, "unidad": "unidad" }
+      {
+        "id_ingrediente": 5,
+        "nombre": "Carne",
+        "cantidad": 150,
+        "unidad": "g"
+      },
+      {
+        "id_ingrediente": 6,
+        "nombre": "Pan",
+        "cantidad": 1,
+        "unidad": "unidad"
+      }
     ],
     "destacada": false
   },
@@ -90,8 +120,18 @@
       "aporte_calorico_total": 550
     },
     "ingredientes": [
-      { "id_ingrediente": 7, "nombre": "Pasta", "cantidad": 300, "unidad": "g" },
-      { "id_ingrediente": 8, "nombre": "Crema", "cantidad": 200, "unidad": "ml" }
+      {
+        "id_ingrediente": 7,
+        "nombre": "Pasta",
+        "cantidad": 300,
+        "unidad": "g"
+      },
+      {
+        "id_ingrediente": 8,
+        "nombre": "Crema",
+        "cantidad": 200,
+        "unidad": "ml"
+      }
     ],
     "destacada": false
   },
@@ -114,8 +154,18 @@
       "aporte_calorico_total": 450
     },
     "ingredientes": [
-      { "id_ingrediente": 9, "nombre": "Tortilla", "cantidad": 4, "unidad": "unidad" },
-      { "id_ingrediente": 5, "nombre": "Carne", "cantidad": 200, "unidad": "g" }
+      {
+        "id_ingrediente": 9,
+        "nombre": "Tortilla",
+        "cantidad": 4,
+        "unidad": "unidad"
+      },
+      {
+        "id_ingrediente": 5,
+        "nombre": "Carne",
+        "cantidad": 200,
+        "unidad": "g"
+      }
     ],
     "destacada": true
   },
@@ -138,8 +188,18 @@
       "aporte_calorico_total": 120
     },
     "ingredientes": [
-      { "id_ingrediente": 10, "nombre": "Zanahoria", "cantidad": 2, "unidad": "unidad" },
-      { "id_ingrediente": 11, "nombre": "Papa", "cantidad": 2, "unidad": "unidad" }
+      {
+        "id_ingrediente": 10,
+        "nombre": "Zanahoria",
+        "cantidad": 2,
+        "unidad": "unidad"
+      },
+      {
+        "id_ingrediente": 11,
+        "nombre": "Papa",
+        "cantidad": 2,
+        "unidad": "unidad"
+      }
     ],
     "destacada": false
   },
@@ -162,8 +222,18 @@
       "aporte_calorico_total": 600
     },
     "ingredientes": [
-      { "id_ingrediente": 5, "nombre": "Carne", "cantidad": 300, "unidad": "g" },
-      { "id_ingrediente": 12, "nombre": "Pan rallado", "cantidad": 100, "unidad": "g" }
+      {
+        "id_ingrediente": 5,
+        "nombre": "Carne",
+        "cantidad": 300,
+        "unidad": "g"
+      },
+      {
+        "id_ingrediente": 12,
+        "nombre": "Pan rallado",
+        "cantidad": 100,
+        "unidad": "g"
+      }
     ],
     "destacada": false
   },
@@ -186,7 +256,12 @@
       "aporte_calorico_total": 180
     },
     "ingredientes": [
-      { "id_ingrediente": 13, "nombre": "Huevo", "cantidad": 2, "unidad": "unidad" }
+      {
+        "id_ingrediente": 13,
+        "nombre": "Huevo",
+        "cantidad": 2,
+        "unidad": "unidad"
+      }
     ],
     "destacada": true
   },
@@ -209,8 +284,18 @@
       "aporte_calorico_total": 600
     },
     "ingredientes": [
-      { "id_ingrediente": 14, "nombre": "Harina", "cantidad": 300, "unidad": "g" },
-      { "id_ingrediente": 15, "nombre": "Queso", "cantidad": 200, "unidad": "g" }
+      {
+        "id_ingrediente": 14,
+        "nombre": "Harina",
+        "cantidad": 300,
+        "unidad": "g"
+      },
+      {
+        "id_ingrediente": 15,
+        "nombre": "Queso",
+        "cantidad": 200,
+        "unidad": "g"
+      }
     ],
     "destacada": false
   },
@@ -233,8 +318,18 @@
       "aporte_calorico_total": 420
     },
     "ingredientes": [
-      { "id_ingrediente": 14, "nombre": "Arroz", "cantidad": 300, "unidad": "g" },
-      { "id_ingrediente": 4, "nombre": "Pollo", "cantidad": 300, "unidad": "g" }
+      {
+        "id_ingrediente": 14,
+        "nombre": "Arroz",
+        "cantidad": 300,
+        "unidad": "g"
+      },
+      {
+        "id_ingrediente": 4,
+        "nombre": "Pollo",
+        "cantidad": 300,
+        "unidad": "g"
+      }
     ],
     "destacada": true
   }

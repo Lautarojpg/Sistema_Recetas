@@ -22,5 +22,29 @@
     "apellido": "aranda",
     "email": "apablopatricio@gmail.com",
     "password": "1234"
+  },
+  {
+    "nombre": "sdsd",
+    "apellido": "asdsd",
+    "email": "juan@mail.com",
+    "password": "1234"
+  },
+  {
+    "nombre": "Lautaro",
+    "apellido": "Lezcano ",
+    "email": "juan1221@gmail.com",
+    "password": "1234556"
+  },
+  {
+    "nombre": "Lautaro",
+    "apellido": "Lezcano",
+    "email": "juan1221@gmail.com",
+    "password": "123456"
+  },
+  {
+    "nombre": "Lautaro",
+    "apellido": "Lezcano",
+    "email": "juan1221@gmail.com",
+    "password": "123456"
   }
 ]
