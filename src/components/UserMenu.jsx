@@ -2,22 +2,12 @@ import { useState, useRef, useEffect } from "react";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 
-export default function UserMenu({ onLogin }) {
+export default function UserMenu({ onLogin, user }) {
   const [open, setOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
-  const [user, setUser] = useState(null);
 
   const menuRef = useRef();
-
-  // Cargar sesión al iniciar
-  useEffect(() => {
-    const session = JSON.parse(localStorage.getItem("session"));
-    if (session) {
-      setUser(session);
-      onLogin && onLogin(session);
-    }
-  }, []);
 
   // Cerrar menú al hacer click afuera
   useEffect(() => {
@@ -32,14 +22,12 @@ export default function UserMenu({ onLogin }) {
 
   const handleLogout = () => {
     localStorage.removeItem("session");
-    setUser(null);
-    onLogin && onLogin(null);
+    onLogin && onLogin?.(null);
   };
 
   const handleLogin = (loggedUser) => {
-    setUser(loggedUser);
-    onLogin && onLogin(loggedUser);
-  };
+  onLogin?.(loggedUser); 
+};
 
   return (
     <div style={{ position: "relative" }} ref={menuRef}>

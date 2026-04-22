@@ -1,9 +1,12 @@
 import RecipeCard from "./RecipeCard";
 
-function SearchResults({ results, query, featured }) {
+function SearchResults({ results, query, featured, userRecipes, user }) {
   console.log('query:', query);
   const hasQuery = query && query.trim() !== "";
   const hasResults = results && results.length > 0;
+  const isLoggedIn = user !== null;
+  console.log('user:', user);
+  console.log("USER RECIPES:", userRecipes);
 
   return (
     <div className="search-results">
@@ -23,16 +26,28 @@ function SearchResults({ results, query, featured }) {
             </ul>
           </>
         ) : (
+          isLoggedIn ? (
           <>
             <p>No se encontraron resultados para "{query}"</p>
 
-            <h3>Recetas destacadas</h3>
+            <h3>Tus recetas</h3>
             <ul className="results-grid">
-                {results.map((recipe) => (
+                {userRecipes.map((recipe) => (
                     <RecipeCard key={recipe.id_receta} recipe={recipe} />
                 ))}
             </ul>
           </>
+          ) : (
+            <>
+              <p>No se encontraron resultados para "{query}"</p>
+              <h3>Recetas destacadas</h3>
+              <ul className="results-grid">
+                {featured.map((recipe) => (
+                  <RecipeCard key={recipe.id_receta} recipe={recipe} />
+                ))}
+              </ul>
+        </>
+          )
         )
       ) : (
         <>

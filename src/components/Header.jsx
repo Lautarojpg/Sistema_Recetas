@@ -2,7 +2,7 @@ import { ChefHat } from "lucide-react"
 import { User2Icon } from "lucide-react"
 import UserMenu from "./UserMenu";
 
-function Header() {
+function Header( {onLogin, user}  ) {
   return (
     <header>
       <nav id = "navbar">
@@ -17,7 +17,7 @@ function Header() {
          {/* Por si hay que añadir elementos al navbar*/}
         </ul>
 
-        <UserMenu />
+        <UserMenu onLogin={onLogin} user={user} />
       </nav>
     </header>
   )

@@ -15,22 +15,27 @@ export default function RegisterForm({ onClose }) {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    // Obtener usuarios existentes
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+  try {
+    const res = await fetch("http://localhost:3000/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(form)
+    });
 
-    // Agregar nuevo usuario
-    users.push(form);
+    const data = await res.json();
 
-    // Guardar en "user.json simulado"
-    localStorage.setItem("users", JSON.stringify(users));
-
-    alert("Usuario guardado (localStorage)");
-
+    alert("Usuario creado correctamente");
     onClose();
-  };
+
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   return (
     <div style={styles.overlay}>
