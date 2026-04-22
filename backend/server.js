@@ -64,9 +64,12 @@ app.get("/api/recetas/usuario/:id", (req, res) => {
     r => r.id_usuario === parseInt(userId)
   );
 
-  console.log("RESULTADO:", userRecetas);
-
   res.json(userRecetas);
+});
+
+app.get("/api/recetas/destacadas", (req, res) => {
+  const destacadas = recetas.filter(r => r.destacada);
+  res.json(destacadas);
 });
 
 app.listen(3000, () => {

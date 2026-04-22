@@ -28,6 +28,12 @@ body {
   min-height: 100vh;
 }
 
+.Link {
+  text-decoration: none;
+  color: inherit;
+
+}
+
 /*Header*/
 
 header {
@@ -385,6 +391,11 @@ header {
   border: 2px solid rgba(134, 93, 31, 0.747);
 }
 
+.recipe-link {
+  text-decoration: none;
+  color: inherit;
+}
+
 .recipe-card:hover {
   box-shadow: 0 4px 6px rgba(0,0,0,0.15);
   background-color: #dfdddd8c;;
@@ -523,3 +534,64 @@ header {
     gap: 10px;
     width: 300px;
   }
+
+  /* PAGINA DE RECETA */
+
+  .recipe-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* HERO */
+.recipe-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.recipe-hero-img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.recipe-hero-info h1 {
+  font-size: 32px;
+  margin: 10px 0;
+}
+
+.recipe-desc {
+  color: #666;
+  font-size: 16px;
+}
+
+/* META */
+.recipe-meta {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #444;
+}
+
+/* BODY */
+.recipe-body {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.recipe-section {
+  background: #e2e0e0;
+  padding: 15px;
+  padding-left: 30px;
+  border-radius: 10px;
+}
+
+.recipe-section h2 {
+  margin-bottom: 10px;
+}

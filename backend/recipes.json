@@ -20,7 +20,8 @@
     "ingredientes": [
       { "id_ingrediente": 1, "nombre": "Harina", "cantidad": 200, "unidad": "g" },
       { "id_ingrediente": 2, "nombre": "Leche", "cantidad": 300, "unidad": "ml" }
-    ]
+    ],
+    "destacada": true
   },
   {
     "id_receta": 2,
@@ -43,7 +44,8 @@
     "ingredientes": [
       { "id_ingrediente": 3, "nombre": "Lechuga", "cantidad": 1, "unidad": "unidad" },
       { "id_ingrediente": 4, "nombre": "Pollo", "cantidad": 200, "unidad": "g" }
-    ]
+    ],
+    "destacada": true
   },
   {
     "id_receta": 3,
@@ -66,7 +68,8 @@
     "ingredientes": [
       { "id_ingrediente": 5, "nombre": "Carne", "cantidad": 150, "unidad": "g" },
       { "id_ingrediente": 6, "nombre": "Pan", "cantidad": 1, "unidad": "unidad" }
-    ]
+    ],
+    "destacada": false
   },
   {
     "id_receta": 4,
@@ -89,7 +92,8 @@
     "ingredientes": [
       { "id_ingrediente": 7, "nombre": "Pasta", "cantidad": 300, "unidad": "g" },
       { "id_ingrediente": 8, "nombre": "Crema", "cantidad": 200, "unidad": "ml" }
-    ]
+    ],
+    "destacada": false
   },
   {
     "id_receta": 5,
@@ -112,7 +116,8 @@
     "ingredientes": [
       { "id_ingrediente": 9, "nombre": "Tortilla", "cantidad": 4, "unidad": "unidad" },
       { "id_ingrediente": 5, "nombre": "Carne", "cantidad": 200, "unidad": "g" }
-    ]
+    ],
+    "destacada": true
   },
   {
     "id_receta": 6,
@@ -135,7 +140,8 @@
     "ingredientes": [
       { "id_ingrediente": 10, "nombre": "Zanahoria", "cantidad": 2, "unidad": "unidad" },
       { "id_ingrediente": 11, "nombre": "Papa", "cantidad": 2, "unidad": "unidad" }
-    ]
+    ],
+    "destacada": false
   },
   {
     "id_receta": 7,
@@ -158,7 +164,8 @@
     "ingredientes": [
       { "id_ingrediente": 5, "nombre": "Carne", "cantidad": 300, "unidad": "g" },
       { "id_ingrediente": 12, "nombre": "Pan rallado", "cantidad": 100, "unidad": "g" }
-    ]
+    ],
+    "destacada": false
   },
   {
     "id_receta": 8,
@@ -180,7 +187,8 @@
     },
     "ingredientes": [
       { "id_ingrediente": 13, "nombre": "Huevo", "cantidad": 2, "unidad": "unidad" }
-    ]
+    ],
+    "destacada": true
   },
   {
     "id_receta": 9,
@@ -203,7 +211,8 @@
     "ingredientes": [
       { "id_ingrediente": 14, "nombre": "Harina", "cantidad": 300, "unidad": "g" },
       { "id_ingrediente": 15, "nombre": "Queso", "cantidad": 200, "unidad": "g" }
-    ]
+    ],
+    "destacada": false
   },
   {
     "id_receta": 10,
@@ -226,6 +235,7 @@
     "ingredientes": [
       { "id_ingrediente": 14, "nombre": "Arroz", "cantidad": 300, "unidad": "g" },
       { "id_ingrediente": 4, "nombre": "Pollo", "cantidad": 300, "unidad": "g" }
-    ]
+    ],
+    "destacada": true
   }
 ]

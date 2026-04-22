@@ -4,7 +4,7 @@ import { SearchIcon } from "lucide-react";
 function SearchBar( {onSearch}) {
   const [search, setSearch] = useState("");
 
-  const handleSearch = async (e) => {
+  const buscarReceta = async (e) => {
     e.preventDefault();
     try {
     const response = await fetch(`http://localhost:3000/api/recetas?q=${search}`);
@@ -16,7 +16,7 @@ function SearchBar( {onSearch}) {
   };
 
   return (
-    <form onSubmit={handleSearch} className="search-form">
+    <form onSubmit={buscarReceta} className="search-form">
       <input
         type="text"
         placeholder="Buscar recetas..."
