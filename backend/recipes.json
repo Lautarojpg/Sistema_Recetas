@@ -319,7 +319,7 @@
     },
     "ingredientes": [
       {
-        "id_ingrediente": 14,
+        "id_ingrediente": 16,
         "nombre": "Arroz",
         "cantidad": 300,
         "unidad": "g"

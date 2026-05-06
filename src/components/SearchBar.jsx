@@ -1,27 +1,24 @@
 import { useState } from "react";
 import { SearchIcon } from "lucide-react";
+import { buscarReceta } from "../services/api";
 
-function SearchBar( {onSearch}) {
-  const [search, setSearch] = useState("");
+function SearchBar( {alBuscar}) {
+  const [busqueda, setBusqueda] = useState("");
 
-  const buscarReceta = async (e) => {
-    e.preventDefault();
-    try {
-    const response = await fetch(`http://localhost:3000/api/recetas?q=${search}`);
-    const results = await response.json();
-    onSearch(results, search);
-    } catch (error) {
-      console.error("Error al buscar recetas:", error);
-    }
-  };
+  const presionarBuscar = async (evento) => {
+  evento.preventDefault();
+
+  const results = await buscarReceta(busqueda);
+  alBuscar(results, busqueda);
+};
 
   return (
-    <form onSubmit={buscarReceta} className="search-form">
+    <form onSubmit={presionarBuscar} className="search-form">
       <input
         type="text"
         placeholder="Buscar recetas..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        value={busqueda}
+        onChange={(evento) => setBusqueda(evento.target.value)}
         className="search-input"
       />
       <button type="submit" className="search-button">

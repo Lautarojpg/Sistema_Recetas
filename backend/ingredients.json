@@ -1,0 +1,82 @@
+[
+    {
+        "id_ingrediente": 1,
+        "nombre": "Harina"
+    },
+    {
+        "id_ingrediente": 2,
+        "nombre": "Leche"
+    },
+    {
+        "id_ingrediente": 3,
+        "nombre": "Lechuga"
+    },
+    {
+        "id_ingrediente": 4,
+        "nombre": "Pollo"
+    },
+    {
+        "id_ingrediente": 5,
+        "nombre": "Carne"
+    },
+    {
+        "id_ingrediente": 6,
+        "nombre": "Pan"
+    },
+    {
+        "id_ingrediente": 7,
+        "nombre": "Pasta"
+    },
+    {
+        "id_ingrediente": 8,
+        "nombre": "Crema"
+    },
+    {
+        "id_ingrediente": 9,
+        "nombre": "Tortilla"
+    },
+    {
+        "id_ingrediente": 10,
+        "nombre": "Zanahoria"
+    },
+    {
+        "id_ingrediente": 11,
+        "nombre": "Papa"
+    },
+    {
+        "id_ingrediente": 12,
+        "nombre": "Pan rallado"
+    },
+    {
+        "id_ingrediente": 13,
+        "nombre": "Huevo"
+    },
+    {
+        "id_ingrediente": 14,
+        "nombre": "Harina"
+    },
+    {
+        "id_ingrediente": 15,
+        "nombre": "Queso"
+    },
+    {
+        "id_ingrediente": 16,
+        "nombre": "Arroz"
+    },
+    {
+        "id_ingrediente": 17,
+        "nombre": "Cebolla"
+    },
+    {
+        "id_ingrediente": 18,
+        "nombre": "Ajo"
+    },
+    {
+        "id_ingrediente": 19,
+        "nombre": "Aceite de oliva"
+    },
+    {
+        "id_ingrediente": 20,
+        "nombre": "Sal"
+    }
+]

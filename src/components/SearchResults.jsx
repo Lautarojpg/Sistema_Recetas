@@ -1,21 +1,21 @@
 import RecipeCard from "./RecipeCard";
 
-function SearchResults({ results, query, featured, userRecipes, user }) {
-  console.log('query:', query);
-  const hasQuery = query && query.trim() !== "";
-  const hasResults = results && results.length > 0;
-  const isLoggedIn = user !== null;
+function SearchResults({ results, busqueda, featured, userRecipes, user }) {
+  console.log('busqueda:', busqueda);
+  const existeCola = busqueda && busqueda.trim() !== "";
+  const existeResultados = results && results.length > 0;
+  const existeSesionUsuario = user !== null;
 
   return (
     <div className="search-results">
       
-      {hasQuery ? (
-        hasResults ? (
+      {existeCola ? (
+        existeResultados ? (
           <>
             {results.length === 1 ? (
-              <p>1 resultado encontrado para "{query}"</p>
+              <p>1 resultado encontrado para "{busqueda}"</p>
             ) : (
-              <p>{results.length} resultados encontrados para "{query}"</p>
+              <p>{results.length} resultados encontrados para "{busqueda}"</p>
             )}
             <ul className="results-grid">
                 {results.map((recipe) => (
@@ -24,9 +24,9 @@ function SearchResults({ results, query, featured, userRecipes, user }) {
             </ul>
           </>
         ) : (
-          isLoggedIn ? (
+          existeSesionUsuario ? (
           <>
-            <p>No se encontraron resultados para "{query}"</p>
+            <p>No se encontraron resultados para "{busqueda}"</p>
 
             <h3>Tus recetas</h3>
             <ul className="results-grid">
@@ -37,7 +37,7 @@ function SearchResults({ results, query, featured, userRecipes, user }) {
           </>
           ) : (
             <>
-              <p>No se encontraron resultados para "{query}"</p>
+              <p>No se encontraron resultados para "{busqueda}"</p>
               <h3>Recetas destacadas</h3>
               <ul className="results-grid">
                 {featured.map((recipe) => (

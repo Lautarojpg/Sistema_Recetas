@@ -6,6 +6,25 @@ import { useState } from "react";
 
 function Header( {onLogin, user, onOpenRecipe}  ) {
   const navigate = useNavigate();
+  if (!user) {
+    return (
+      <header>
+      <nav id = "navbar">
+        <div className="logo-box">
+          <div className="logo navbar-select" onClick={() => navigate("/")}>
+            <ChefHat className="hat-logo" size={32}/>
+            <h1>Recetas</h1>
+          </div>
+        </div>
+
+        <ul className="nav-links">
+        </ul>
+
+        <UserMenu onLogin={onLogin} user={user} />
+      </nav>
+    </header>
+    )
+  }
   return (
     <header>
       <nav id = "navbar">

@@ -1,12 +1,15 @@
 import express from "express";
 import cors from "cors";
 import fs from "fs";
+import { validarDatosReceta } from "./helpers.js";
+
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔹 Cargar datos
+// Cargar datos
+
 const recetas = JSON.parse(
   fs.readFileSync("./recipes.json", "utf-8")
 );
@@ -15,16 +18,82 @@ const users = JSON.parse(
   fs.readFileSync("./users.json", "utf-8")
 );
 
+const ingredients = JSON.parse(
+  fs.readFileSync("./ingredients.json", "utf-8")
+);
+
+
+// Rutas relacionadas a las recetas
+
+// Busqueda de recetas con query
 
 app.get("/api/recetas", (req, res) => {
-  const query = req.query.q?.toLowerCase() || "";
+  const busqueda = req.query.q?.toLowerCase() || "";
 
   const resultados = recetas.filter((r) =>
-    r.nombre_receta.toLowerCase().includes(query)
+    r.nombre_receta.toLowerCase().includes(busqueda)
   );
 
   res.json(resultados);
 });
+
+// Devuelve recetas de usuario especifico
+
+app.get("/api/recetas/usuario/:id", (req, res) => {
+  const userId = parseInt(req.params.id);
+
+  const userRecetas = recetas.filter(
+    (r) => r.id_usuario === userId
+  );
+
+  res.json(userRecetas);
+});
+
+
+// Devuelve recetas destacadas
+
+app.get("/api/recetas/destacadas", (req, res) => {
+  const destacadas = recetas.filter((r) => r.destacada);
+  res.json(destacadas);
+});
+
+
+// Crear nueva receta
+
+app.post("/api/recipes", (req, res) => {
+  const r = req.body;
+
+  const errors = validarDatosReceta(r, ingredients);
+
+  if (Object.keys(errors).length > 0) {
+    console.log("Errores al crear receta:", errors);
+    return res.status(400).json({ errors });
+  }
+
+  const nextId =
+    recetas.length > 0
+      ? Math.max(...recetas.map((r) => r.id_receta)) + 1
+      : 1;
+
+  r.id_receta = nextId;
+
+  recetas.push(r);
+
+  fs.writeFileSync(
+    "./recipes.json",
+    JSON.stringify(recetas, null, 2)
+  );
+
+  res.json({
+    message: "Receta enviada para revision",
+    id_receta: nextId
+  });
+});
+
+
+// Rutas relacionadas al manejo de usuario
+
+// Login y registro
 
 app.post("/api/login", (req, res) => {
   const { email, password } = req.body;
@@ -76,88 +145,13 @@ app.post("/api/register", (req, res) => {
 });
 
 
-app.get("/api/recetas/usuario/:id", (req, res) => {
-  const userId = parseInt(req.params.id);
+// Rutas relacionadas a ingredientes
 
-  const userRecetas = recetas.filter(
-    (r) => r.id_usuario === userId
-  );
-
-  res.json(userRecetas);
+app.get("/api/ingredients", (req, res) => {
+  res.json(ingredients);
 });
 
-
-app.get("/api/recetas/destacadas", (req, res) => {
-  const destacadas = recetas.filter((r) => r.destacada);
-  res.json(destacadas);
-});
-
-
-app.post("/api/recipes", (req, res) => {
-  const r = req.body;
-
-  const errors = [];
-
-
-  if (!r.nombre_receta?.trim()) errors.push("nombre_receta requerido");
-  if (!r.descripcion?.trim()) errors.push("descripcion requerida");
-  if (!r.instrucciones?.trim()) errors.push("instrucciones requeridas");
-
-
-  if (isNaN(r.tiempo_total)) errors.push("tiempo_total debe ser número");
-  if (isNaN(r.porcion)) errors.push("porcion debe ser número");
-
-
-  const dificultades = ["Fácil", "Media", "Difícil"];
-  if (!dificultades.includes(r.dificultad)) {
-    errors.push("dificultad inválida");
-  }
-
-  if (!r.info_nutricional) {
-    errors.push("info_nutricional requerida");
-  } else {
-    const n = r.info_nutricional;
-
-    if (isNaN(n.proteinas_totales)) errors.push("proteinas inválidas");
-    if (isNaN(n.grasas_totales)) errors.push("grasas inválidas");
-    if (isNaN(n.carbs_totales)) errors.push("carbs inválidos");
-    if (isNaN(n.aporte_calorico_total)) errors.push("calorías inválidas");
-  }
-
-  if (!Array.isArray(r.ingredientes) || r.ingredientes.length === 0) {
-    errors.push("Debe haber al menos un ingrediente");
-  } else {
-    r.ingredientes.forEach((ing, i) => {
-      if (!ing.nombre?.trim()) errors.push(`Ingrediente ${i} sin nombre`);
-      if (isNaN(ing.cantidad)) errors.push(`Ingrediente ${i} cantidad inválida`);
-      if (!ing.unidad?.trim()) errors.push(`Ingrediente ${i} sin unidad`);
-    });
-  }
-
-  if (errors.length > 0) {
-    return res.status(400).json({ errors });
-  }
-
-
-  const nextId =
-    recetas.length > 0
-      ? Math.max(...recetas.map((r) => r.id_receta)) + 1
-      : 1;
-
-  r.id_receta = nextId;
-
-  recetas.push(r);
-
-  fs.writeFileSync(
-    "./recipes.json",
-    JSON.stringify(recetas, null, 2)
-  );
-
-  res.json({
-    message: "Receta creada",
-    id_receta: nextId
-  });
-});
+// Escuchar servidor puerto 3000
 
 app.listen(3000, () => {
   console.log("Servidor corriendo en http://localhost:3000");

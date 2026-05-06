@@ -621,3 +621,182 @@ header {
   color: var(--primary-dark);
 }
 
+/* Overlay más moderno */
+.crear-receta-form-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 15, 15, 0.65);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+/* Contenedor */
+.crear-receta-form {
+  background: var(--primary-light);
+  padding: 28px;
+  border-radius: 16px;
+  width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  font-family: system-ui, sans-serif;
+}
+
+/* Títulos */
+.crear-receta-form h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.crear-receta-form h4 {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #2e2d2d;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 4px;
+}
+
+/* Inputs, textarea y select */
+.crear-receta-form input,
+.crear-receta-form textarea,
+.crear-receta-form select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  background: #fafafa;
+  transition: all 0.2s ease;
+  box-sizing: border-box; /* evita que "se muevan" */
+}
+
+/* Textarea altura */
+.crear-receta-form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.crear-receta-form input:focus,
+.crear-receta-form textarea:focus,
+.crear-receta-form select:focus {
+  outline: none;
+  border-color: #6366f1;
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(99,102,241,0.2);
+}
+
+/* Placeholder más suave */
+.crear-receta-form ::placeholder {
+  color: #999;
+}
+
+/* Contenedor ingrediente */
+.crear-receta-form > div {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+/* Inputs y select alineados */
+.crear-receta-form > div input,
+.crear-receta-form > div select {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  background: #fafafa;
+  box-sizing: border-box;
+  height: 44px;
+}
+
+/* Select más chico */
+.crear-receta-form > div select {
+  flex: 0.6;
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23666' height='20' viewBox='0 0 20 20' width='20'><path d='M5 7l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  padding-right: 32px;
+}
+
+/* Focus consistente */
+.crear-receta-form > div input:focus,
+.crear-receta-form > div select:focus {
+  outline: none;
+  border-color: #6366f1;
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(99,102,241,0.2);
+}
+
+/* Botones */
+.crear-receta-form button {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+/* Botón agregar ingrediente */
+.crear-receta-form button[type="button"]:first-of-type {
+  background: #f1f5f9;
+  color: #333;
+}
+
+.crear-receta-form button[type="button"]:first-of-type:hover {
+  background: #e2e8f0;
+}
+
+/* Botón guardar */
+.crear-receta-form button[type="submit"] {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: white;
+  box-shadow: 0 8px 20px rgba(99,102,241,0.3);
+}
+
+.crear-receta-form button[type="submit"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 25px rgba(99,102,241,0.4);
+}
+
+/* Botón cancelar */
+.crear-receta-form button:last-of-type {
+  background: transparent;
+  border: 1px solid #ddd;
+  color: #555;
+}
+
+.crear-receta-form button:last-of-type:hover {
+  background: #f5f5f5;
+}
+
+/* Scroll más prolijo */
+.crear-receta-form::-webkit-scrollbar {
+  width: 6px;
+}
+
+.crear-receta-form::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+.errores-formulario p {
+  color: red;
+  font-size: 16px;
+  font-weight: 500;
+}
