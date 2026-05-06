@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import fs from "fs";
-import { validarDatosReceta } from "./helpers.js";
+import { validarIngredientesReceta } from "./helpers.js";
 
 
 const app = express();
