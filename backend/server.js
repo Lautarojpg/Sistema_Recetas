@@ -63,7 +63,7 @@ app.get("/api/recetas/destacadas", (req, res) => {
 app.post("/api/recipes", (req, res) => {
   const r = req.body;
 
-  const errors = validarDatosReceta(r, ingredients);
+  const errors = validarIngredientesReceta(r, ingredients);
 
   if (Object.keys(errors).length > 0) {
     console.log("Errores al crear receta:", errors);

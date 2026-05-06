@@ -10,7 +10,7 @@ export default function RegisterForm({ onClose }) {
 
   const [errors, setErrors] = useState({});
 
-  // 🔹 Validaciones
+  // Validaciones
   const validate = () => {
     const newErrors = {};
 
@@ -37,7 +37,7 @@ export default function RegisterForm({ onClose }) {
     return newErrors;
   };
 
-  // 🔹 Change
+  //  Change
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -59,7 +59,7 @@ export default function RegisterForm({ onClose }) {
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      return; // ❌ no envía
+      return; // no envía
     }
 
     try {
