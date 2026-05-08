@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import fs from "fs";
-import { validarDatosReceta, validarDatosRegistroUsuario } from "./helpers.js";
+import { validarIngredientesReceta, validarDatosRegistroUsuario } from "./helpers.js";
 
 
 const app = express();
@@ -66,7 +66,7 @@ app.get("/api/recetas/destacadas", (req, res) => {
 app.post("/api/recipes", (req, res) => {
   const r = req.body;
 
-  const errors = validarDatosReceta(r, ingredients);
+  const errors = validarIngredientesReceta(r, ingredients);
 
   if (Object.keys(errors).length > 0) {
     console.log("Errores al crear receta:", errors);

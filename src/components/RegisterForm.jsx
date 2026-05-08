@@ -12,7 +12,7 @@ export default function RegisterForm({ onClose }) {
 
   const [errores, setErrores] = useState({});
 
-  // 🔹 Change
+  //  Change
   const handleChange = (e) => {
     setForm({
       ...form,
