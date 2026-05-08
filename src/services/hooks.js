@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { buscarIngredientes } from "./api.js"
+import { buscarIngredientes, buscarDestacadas, buscarRecetasUsuario } from "./api.js"
 
 // Hook de sesion
 
@@ -35,3 +35,34 @@ export function useIngredientes() {
   return ingredientes;
 }
 
+// Hook de recetas destacada
+export function useDestacadas() {
+  const [recetasDestacadas, setRecetasDestacadas] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await buscarDestacadas();
+      setRecetasDestacadas(data);
+    };
+
+    fetchData();
+  }, []);
+
+  return recetasDestacadas;
+}
+
+  // Hook de recetas usuario
+  export function useRecetasUsuario(user) {
+    const [recetasUsuario, setRecetasUsuario] = useState([]);
+    useEffect(() => {
+      const fetchData = async () => {
+        if (!user) {
+        return [];
+        }
+        const data = await buscarRecetasUsuario(user);
+        setRecetasUsuario(data);
+      };
+      fetchData();
+    }, [user]);
+    return recetasUsuario;
+  }

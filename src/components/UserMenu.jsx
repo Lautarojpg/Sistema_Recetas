@@ -45,7 +45,6 @@ export default function UserMenu({ onLogin, user }) {
         {user ? `👤 ${user.nombre}` : "👤"}
       </button>
 
-      {/* DROPDOWN */}
       {open && (
         <div style={styles.menu}>
           {!user ? (
@@ -84,7 +83,7 @@ export default function UserMenu({ onLogin, user }) {
         </div>
       )}
 
-      {/* MODALES */}
+      {/* Abre login */}
       {showLogin && (
         <LoginForm
           onClose={() => setShowLogin(false)}
@@ -92,6 +91,7 @@ export default function UserMenu({ onLogin, user }) {
         />
       )}
 
+      {/* Abre registra*/}
       {showRegister && (
         <RegisterForm
           onClose={() => setShowRegister(false)}

@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import fs from "fs";
-import { validarIngredientesReceta, validarDatosRegistroUsuario } from "./helpers.js";
+import { validarDatosReceta, validarDatosRegistroUsuario } from "./helpers.js";
 
 
 const app = express();
@@ -21,10 +21,6 @@ const users = JSON.parse(
 const ingredients = JSON.parse(
   fs.readFileSync("./ingredients.json", "utf-8")
 );
-
-const usuarios = JSON.parse(
-  fs.readFileSync("./users.json", "utf-8")
-)
 
 // Rutas relacionadas a las recetas
 
@@ -66,7 +62,7 @@ app.get("/api/recetas/destacadas", (req, res) => {
 app.post("/api/recipes", (req, res) => {
   const r = req.body;
 
-  const errors = validarIngredientesReceta(r, ingredients);
+  const errors = ValirdarDatosReceta(r, ingredients);
 
   if (Object.keys(errors).length > 0) {
     console.log("Errores al crear receta:", errors);
@@ -114,9 +110,10 @@ app.post("/api/login", (req, res) => {
 
 
 app.post("/api/register", (req, res) => {
+try{
   const { nombre, apellido, email, password } = req.body;
 
-  const errores = validarDatosRegistroUsuario({ nombre, apellido, email, password, usuarios });
+  const errores = validarDatosRegistroUsuario({ nombre, apellido, email, password, users });
 
   if (Object.keys(errores).length > 0) {
     console.log(errores);
@@ -130,6 +127,14 @@ app.post("/api/register", (req, res) => {
   fs.writeFileSync("./users.json", JSON.stringify(users, null, 2));
 
   res.json({ message: "Usuario creado" });
+  
+}catch(error){
+  console.log(error);
+  res.status(500).json({
+      error: error.message
+    });
+}
+    
 });
 
 

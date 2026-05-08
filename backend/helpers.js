@@ -1,4 +1,4 @@
-export const validarIngredientesReceta = (r, ingredientesDB) => {
+export const validarDatosReceta = (r, ingredientesDB) => {
   const errors = {};
 
 // Tipos
