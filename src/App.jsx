@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { usarSesion } from './services/hooks'
+import { useState } from 'react'
+import { useSesion } from './services/hooks.js'
 import { Routes, Route } from "react-router-dom";
 
 import Header from './components/Header'
@@ -10,7 +10,7 @@ import RecipePage from "./pages/RecipePage";
 import Home from "./pages/Home";
 
 function App() {
-  const { user, setUser } = usarSesion();
+  const {user, setUser} = useSesion();
   const [showRecipeForm, setShowRecipeForm] = useState(false);
 
   return (
@@ -22,7 +22,7 @@ function App() {
       />
 
       {showRecipeForm && (
-        <RecipeForm onClose={() => setShowRecipeForm(false)} />
+        <RecipeForm onClose={() => setShowRecipeForm(false)} user={user} />
       )}
 
       <Routes>
@@ -36,3 +36,4 @@ function App() {
 }
 
 export default App
+

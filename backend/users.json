@@ -46,5 +46,11 @@
     "apellido": "Lezcano",
     "email": "juan1221@gmail.com",
     "password": "123456"
+  },
+  {
+    "nombre": "as",
+    "apellido": "asd",
+    "email": "asdasd@gmail.com",
+    "password": "fg1234"
   }
 ]

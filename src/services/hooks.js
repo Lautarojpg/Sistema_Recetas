@@ -1,12 +1,13 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { buscarIngredientes } from "./api.js"
 
-export function usarSesion() {
-  const [user, setUser] = useState(null);
+// Hook de sesion
 
-  useEffect(() => {
-    const session = JSON.parse(localStorage.getItem("session"));
-    if (session) setUser(session);
-  }, []);
+export function useSesion() {
+  const [user, setUser] = useState(() => {
+    const session = localStorage.getItem("session");
+    return session ? JSON.parse(session) : null;
+  });
 
   useEffect(() => {
     if (user) {
@@ -18,3 +19,19 @@ export function usarSesion() {
 
   return { user, setUser };
 }
+
+// Hook de ingredientes
+
+export function useIngredientes() {
+  const [ingredientes, setIngredientes] = useState([]);
+  useEffect(() => {
+    const cargarIngredientes = async () => {
+      const data = await buscarIngredientes();
+      setIngredientes(data)
+    };
+    cargarIngredientes();
+  }, []);
+
+  return ingredientes;
+}
+

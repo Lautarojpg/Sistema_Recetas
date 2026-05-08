@@ -1,3 +1,5 @@
+// Fetch a ingredientes
+
 export const buscarIngredientes = async () => {
     try {
       const res = await fetch("http://localhost:3000/api/ingredients");
@@ -7,6 +9,8 @@ export const buscarIngredientes = async () => {
       return [];
     }
 };
+
+// Fetch recetas
 
 export const buscarDestacadas = async () => {
     try {
@@ -44,9 +48,42 @@ export const buscarRecetasUsuario = async (user) => {
     }
   };
 
- export const publicarReceta = async (e, form) => {
-      try {
-      const res = await fetch("http://localhost:3000/api/recipes", {
+ export const publicarReceta = async (form) => {
+  try {
+    const res = await fetch("http://localhost:3000/api/recipes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(form)
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw data;
+    }
+
+    return data;
+
+  } catch (error) {
+    console.error(error);
+
+    if (error.errors || error.general) {
+      throw error;
+    }
+
+    throw {
+      general: "Error en el servidor"
+    };
+  }
+};
+
+// Fetch login
+
+export const ingresarUsuario = async ({ form, onClose, onLogin }) => {
+  try {
+      const res = await fetch("http://localhost:3000/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -54,10 +91,39 @@ export const buscarRecetasUsuario = async (user) => {
         body: JSON.stringify(form)
       });
 
-      const data = await res.json();
+      if (!res.ok) {
+        const errorData = await res.json();
+        alert(errorData.error || "Error al iniciar sesión");
+        return;
+      }
+
+      const user = await res.json();
+
+      onLogin(user);
+      onClose();
 
     } catch (err) {
       console.error(err);
-      return { general: "Error al enviar receta" };
     }
+  }
+
+  // Fetch Registrar
+
+ export const registrarUsuario = async (form) => {
+  const res = await fetch("http://localhost:3000/api/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(form)
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw data;
+    alert("Error en la api");
+  }
+
+  return data;
 };

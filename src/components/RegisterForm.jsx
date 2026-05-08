@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { validarRegistrarUsuario} from "../services/utils.js"
+import { registrarUsuario } from "../services/api.js";
 
 export default function RegisterForm({ onClose }) {
   const [form, setForm] = useState({
@@ -8,34 +10,7 @@ export default function RegisterForm({ onClose }) {
     password: ""
   });
 
-  const [errors, setErrors] = useState({});
-
-  // 🔹 Validaciones
-  const validate = () => {
-    const newErrors = {};
-
-    if (!form.nombre.trim()) {
-      newErrors.nombre = "El nombre es obligatorio";
-    }
-
-    if (!form.apellido.trim()) {
-      newErrors.apellido = "El apellido es obligatorio";
-    }
-
-    if (!form.email.trim()) {
-      newErrors.email = "El email es obligatorio";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      newErrors.email = "Email inválido";
-    }
-
-    if (!form.password) {
-      newErrors.password = "La contraseña es obligatoria";
-    } else if (form.password.length < 6) {
-      newErrors.password = "Mínimo 6 caracteres";
-    }
-
-    return newErrors;
-  };
+  const [errores, setErrores] = useState({});
 
   // 🔹 Change
   const handleChange = (e) => {
@@ -43,60 +18,50 @@ export default function RegisterForm({ onClose }) {
       ...form,
       [e.target.name]: e.target.value
     });
-
-    // opcional: limpiar error al escribir
-    setErrors({
-      ...errors,
+    setErrores({
+      ...errores,
       [e.target.name]: ""
     });
   };
 
-  // 🔹 Submit
-  const handleSubmit = async (e) => {
+  const presionarRegistrarse = async (e) => {
     e.preventDefault();
 
-    const validationErrors = validate();
-
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return; // ❌ no envía
+    const erroresValidacion = validarRegistrarUsuario(form);
+    setErrores(erroresValidacion);
+    if (Object.keys(erroresValidacion).length > 0) {
+      return;
     }
 
     try {
-      const res = await fetch("http://localhost:3000/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(form)
-      });
-
-      if (!res.ok) throw new Error("Error en API");
+      await registrarUsuario(form);
 
       alert("Usuario creado correctamente");
       onClose();
 
-    } catch (err) {
-      console.error(err);
+    } catch (errorData) {
+       alert("Error recibido");
+       console.log(errorData);
+      setErrores(errorData.errors || {});
     }
   };
 
   return (
     <div style={styles.overlay}>
-      <form style={styles.form} onSubmit={handleSubmit}>
+      <form style={styles.form} onSubmit={presionarRegistrarse}>
         <h3>Registrarse</h3>
 
         <input name="nombre" placeholder="Nombre" onChange={handleChange} />
-        {errors.nombre && <span style={styles.error}>{errors.nombre}</span>}
+        {errores.nombre && <span style={styles.error}>{errores.nombre}</span>}
 
         <input name="apellido" placeholder="Apellido" onChange={handleChange} />
-        {errors.apellido && <span style={styles.error}>{errors.apellido}</span>}
+        {errores.apellido && <span style={styles.error}>{errores.apellido}</span>}
 
         <input name="email" placeholder="Email" onChange={handleChange} />
-        {errors.email && <span style={styles.error}>{errors.email}</span>}
+        {errores.email && <span style={styles.error}>{errores.email}</span>}
 
         <input name="password" type="password" placeholder="Contraseña" onChange={handleChange} />
-        {errors.password && <span style={styles.error}>{errors.password}</span>}
+        {errores.password && <span style={styles.error}>{errores.password}</span>}
 
         <button type="submit">Guardar</button>
         <button type="button" onClick={onClose}>Cancelar</button>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ingresarUsuario } from "../services/api.js"
 
 export default function LoginForm({ onClose, onLogin }) {
   const [form, setForm] = useState({
@@ -6,49 +7,25 @@ export default function LoginForm({ onClose, onLogin }) {
     password: ""
   });
 
-  const handleChange = (e) => {
+  const handleCambio = (e) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value
     });
   };
 
-  const handleSubmit = async (e) => {
+  const presionarIngresar = (e) => {
     e.preventDefault();
-
-    try {
-      const res = await fetch("http://localhost:3000/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(form)
-      });
-
-      if (!res.ok) {
-        alert("Credenciales incorrectas");
-        return;
-      }
-
-      const user = await res.json();
-
-      localStorage.setItem("session", JSON.stringify(user));
-
-      onLogin(user);
-      onClose();
-
-    } catch (err) {
-      console.error(err);
-    }
+    ingresarUsuario({ form, onClose, onLogin });
   };
 
   return (
     <div className="login-form-overlay">
-      <form className="login-form" onSubmit={handleSubmit}>
+      <form className="login-form" onSubmit={presionarIngresar}>
         <h3>Ingresar</h3>
 
-        <input name="email" placeholder="Email" onChange={handleChange} />
-        <input name="password" type="password" placeholder="Contraseña" onChange={handleChange} />
+        <input name="email" placeholder="Email" onChange={handleCambio} />
+        <input name="password" type="password" placeholder="Contraseña" onChange={handleCambio} />
 
         <button type="submit">Ingresar</button>
         <button type="button" onClick={onClose}>Cancelar</button>

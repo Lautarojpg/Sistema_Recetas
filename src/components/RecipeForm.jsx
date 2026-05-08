@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
-import { buscarIngredientes } from "../services/api.js";
-import { validarCamposReceta } from "../services/utils.js";
+import { useState } from "react";
 import { publicarReceta } from "../services/api.js";
+import { validarCamposReceta } from "../services/utils.js";
+import { useIngredientes } from "../services/hooks.js";
 
-
-export default function RecipeForm({ onClose }) {
+export default function RecipeForm({ onClose, user }) {
   const [form, setForm] = useState({
     nombre_receta: "",
     descripcion: "",
@@ -13,7 +12,7 @@ export default function RecipeForm({ onClose }) {
     porcion: 1,
     imagen: "",
     instrucciones: "",
-    id_usuario: 1,
+    id_usuario: user.id_usuario,
     id_coccion: 1,
     id_etiqueta: 1,
     destacada: false,
@@ -28,22 +27,13 @@ export default function RecipeForm({ onClose }) {
     ]
   });
 
-  const [ingredients, setIngredients] = useState([]);
   const [erroresFormulario, setErroresFormulario] = useState({
   campos: {},
   datos: {},
   general: null
   });
 
-  // Cargar ingredientes disponibles para el select
-
-  useEffect(() => {
-    const cargarIngredientes = async () => {
-      const data = await buscarIngredientes();
-      setIngredients(data);
-    };
-    cargarIngredientes();
-  }, []);
+  const ingredientes = useIngredientes();
 
   //  Manejo simple
 
@@ -85,15 +75,13 @@ export default function RecipeForm({ onClose }) {
     });
   };
 
-  // Mandar request a backend para guardar receta
-
   const presionarGuardar = async (e) => {
   e.preventDefault();
-
   setErroresFormulario({ campos: {}, datos: {}, general: null });
 
   //  Validación frontend
   const erroresCampos = validarCamposReceta(form);
+  console.log(erroresCampos);
 
   if (Object.keys(erroresCampos).length > 0) {
     setErroresFormulario({
@@ -105,28 +93,21 @@ export default function RecipeForm({ onClose }) {
   }
 
   try {
-    const data = await publicarReceta(form);
+  await publicarReceta(form);
 
-    if (!data.ok) {
-      setErroresFormulario({
-        campos: {},
-        datos: data.errors,
-        general: null
-      });
-      return;
-    }
+  alert("Receta enviada para revisión");
+  onClose();
 
-    alert("Receta enviada para revisión");
-    onClose();
-
-  } catch (error) {
-    setErroresFormulario({
-      campos: {},
-      datos: {},
-      general: "Error en el servidor"
-    });
-  }
+} catch (errorsData) {
+  setErroresFormulario({
+    campos: {},
+    datos: errorsData.errors || {},
+    general: errorsData.general || "Error en el servidor"
+  });
+}
 };
+
+// Mostrar errores en el formulario
 
   const mostrarErrores = (campo) => {
   const error =
@@ -183,7 +164,7 @@ export default function RecipeForm({ onClose }) {
           <div key={index}>
             <select name="nombre" value={ing.nombre} onChange={(e) => handleCambioIngrediente(index, e)}>
               <option value="">Seleccionar ingrediente</option>
-              {ingredients.map((ingrediente) => (
+              {ingredientes.map((ingrediente) => (
                 <option key={ingrediente.id_ingrediente} value={ingrediente.nombre}>
                   {ingrediente.nombre}
                 </option>

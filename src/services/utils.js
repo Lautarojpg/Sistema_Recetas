@@ -1,5 +1,5 @@
 export const validarCamposReceta = (form) => {
-  const errors = {};
+  const errores = {};
 
   if (!form.nombre_receta?.trim()) errors.nombre_receta = "Nombre requerido";
   if(form.nombre_receta.length < 6) errors.nombre_receta = "Nombre debe tener al menos 6 caracteres";
@@ -25,5 +25,35 @@ export const validarCamposReceta = (form) => {
       if (!ing.unidad?.trim()) errors.ingredientes = `Seleccionar unidad para ingrediente ${i+1}`;
     });
   }
-  return errors;
+  return errores;
 };
+
+export const validarRegistrarUsuario = (form) => {
+    const errores = {};
+
+    if (!form.nombre.trim()) {
+      errores.nombre = "El nombre es obligatorio";
+    }
+
+    if (!form.apellido.trim()) {
+      errores.apellido = "El apellido es obligatorio";
+    }
+
+    if (!form.email.trim()) {
+      errores.email = "El email es obligatorio";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      errores.email = "Email inválido";
+    }
+
+    if (!form.password) {
+      errores.password = "La contraseña es obligatoria";
+    } else if (form.password.length < 6) {
+      errores.password = "Mínimo 6 caracteres";
+    }
+    
+    if(Object.keys(errores).length > 0) {
+      return errores;
+    }
+    return {};
+
+  };

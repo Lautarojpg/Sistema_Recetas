@@ -1,20 +1,3 @@
-/*function Footer() {
-  return (
-    <footer>
-      <div className="footer-content">
-        <div 
-        <p>&copy; 2026 Recetas. Todos los derechos reservados.</p>
-
-        <div className="social-links">
-          <a href="#twitter">Twitter</a>
-          <a href="#linkedin">LinkedIn</a>
-          <a href="#github">GitHub</a>
-        </div>
-      </div>
-    </footer>
-  )
-}*/
-
 import { ChefHat } from "lucide-react";
 
 function Footer() {

@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import fs from "fs";
-import { validarDatosReceta } from "./helpers.js";
+import { validarDatosReceta, validarDatosRegistroUsuario } from "./helpers.js";
 
 
 const app = express();
@@ -22,6 +22,9 @@ const ingredients = JSON.parse(
   fs.readFileSync("./ingredients.json", "utf-8")
 );
 
+const usuarios = JSON.parse(
+  fs.readFileSync("./users.json", "utf-8")
+)
 
 // Rutas relacionadas a las recetas
 
@@ -103,9 +106,9 @@ app.post("/api/login", (req, res) => {
   );
 
   if (!user) {
-    return res.status(401).json({ error: "Credenciales incorrectas" });
+    return res.status(401).json({ error: "Credencialesss incorrectas" });
   }
-
+  console.log("SERVER - Usuario logueado:", user);
   res.json(user);
 });
 
@@ -113,28 +116,13 @@ app.post("/api/login", (req, res) => {
 app.post("/api/register", (req, res) => {
   const { nombre, apellido, email, password } = req.body;
 
-  const errors = [];
+  const errores = validarDatosRegistroUsuario({ nombre, apellido, email, password, usuarios });
 
-  if (!nombre?.trim()) errors.push("nombre requerido");
-  if (!apellido?.trim()) errors.push("apellido requerido");
-
-  if (!email?.trim()) {
-    errors.push("email requerido");
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    errors.push("email inválido");
-  }
-
-  if (!password || password.length < 6) {
-    errors.push("password mínimo 6 caracteres");
-  }
-
-  const exists = users.find((u) => u.email === email);
-  if (exists) {
-    errors.push("email ya registrado");
-  }
-
-  if (errors.length > 0) {
-    return res.status(400).json({ errors });
+  if (Object.keys(errores).length > 0) {
+    console.log(errores);
+    return res.status(400).json({
+      errors: errores
+    });
   }
 
   users.push({ nombre, apellido, email, password });

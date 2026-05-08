@@ -28,5 +28,53 @@ r.ingredientes.forEach((ing, i) => {
   if (!r.id_usuario) {
     errors.usuario = "Usuario inválido";
   }
-
 }
+
+export const validarDatosRegistroUsuario = ({
+  nombre,
+  apellido,
+  email,
+  password,
+  users
+}) => {
+  const errors = {};
+
+  // Email ya registrado
+
+  const emailExistente = users.some(
+    (user) => user.email.toLowerCase() === email.toLowerCase()
+  );
+
+  if (emailExistente) {
+    errors.email = "El email ya está registrado";
+  }
+
+  // Usuario duplicado (mismo nombre y apellido)
+
+  const usuarioExistente = users.some(
+    (user) =>
+      user.nombre.trim().toLowerCase() === nombre.trim().toLowerCase() &&
+      user.apellido.trim().toLowerCase() === apellido.trim().toLowerCase()
+  );
+
+  if (usuarioExistente) {
+    errors.apellido = "Ya existe un usuario con ese nombre y apellido";
+  }
+
+  // Contraseña demasiado común
+
+  const passwordsComunes = [
+    "123456",
+    "password",
+    "12345678",
+    "qwerty",
+    "admin",
+    "admin123"
+  ];
+
+  if (passwordsComunes.includes(password.toLowerCase())) {
+    errors.password = "La contraseña es demasiado insegura";
+  }
+
+  return errors;
+};
