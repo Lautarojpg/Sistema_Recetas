@@ -39,7 +39,7 @@ app.get("/api/recetas", (req, res) => {
 // Devuelve recetas de usuario especifico
 
 app.get("/api/recetas/usuario/:id", (req, res) => {
-  const userId = parseInt(req.params.id);
+  const userId = getUsuarioId(req.params.id)
 
   const userRecetas = recetas.filter(
     (r) => r.id_usuario === userId

@@ -78,3 +78,7 @@ export const validarDatosRegistroUsuario = ({
 
   return errors;
 };
+
+export const getUsuarioId = (id) => {
+  return parseInt(id);
+};

@@ -1,6 +1,6 @@
 import RecipeCard from "./RecipeCard";
 
-function SearchResults({ results, busqueda, featured, userRecipes, user }) {
+function SearchResults({ results, busqueda, destacadas, usuarioRecetas, user }) {
   console.log('busqueda:', busqueda);
   const existeCola = busqueda && busqueda.trim() !== "";
   const existeResultados = results && results.length > 0;
@@ -30,7 +30,7 @@ function SearchResults({ results, busqueda, featured, userRecipes, user }) {
 
             <h3>Tus recetas</h3>
             <ul className="results-grid">
-                {userRecipes.map((recipe) => (
+                {usuarioRecetas.map((recipe) => (
                     <RecipeCard key={recipe.id_receta} recipe={recipe} />
                 ))}
             </ul>
@@ -40,7 +40,7 @@ function SearchResults({ results, busqueda, featured, userRecipes, user }) {
               <p>No se encontraron resultados para "{busqueda}"</p>
               <h3>Recetas destacadas</h3>
               <ul className="results-grid">
-                {featured.map((recipe) => (
+                {destacadas.map((recipe) => (
                   <RecipeCard key={recipe.id_receta} recipe={recipe} />
                 ))}
               </ul>
@@ -51,7 +51,7 @@ function SearchResults({ results, busqueda, featured, userRecipes, user }) {
         <>
           <h3>Recetas destacadas</h3>
           <ul className="results-grid">
-            {featured.map((recipe) => (
+            {destacadas.map((recipe) => (
               <RecipeCard key={recipe.id_receta} recipe={recipe} />
             ))}
           </ul>
