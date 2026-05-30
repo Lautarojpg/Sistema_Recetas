@@ -3,93 +3,92 @@ import Usuario from '../models/Usuario.js';
 import UsuarioRepository from '../repositories/UsuarioRepository.js';
 
 class UsuarioService {
-
     constructor() {
         this.usuarioRepository = new UsuarioRepository();
     }
 
-    async registrar(nombre, apellido, email, contraseña) {
+    async registrar({ nombre, apellido, email, password }) {
+        // 1. Validar campos requeridos
+        if (!nombre || !nombre.trim()) {
+            throw new Error('Nombre obligatorio');
+        }
+        if (!apellido || !apellido.trim()) {
+            throw new Error('Apellido obligatorio');
+        }
+        if (!email || !email.trim()) {
+            throw new Error('Email obligatorio');
+        }
+        if (!password || !password.trim()) {
+            throw new Error('Contraseña obligatoria');
+        }
 
-        const usuarioExistente =
-            await this.usuarioRepository.buscarPorEmail(email);
+        // 2. Validar contraseñas comunes (regla de negocio heredada de helpers.js)
+        const passwordsComunes = [
+            "123456",
+            "password",
+            "12345678",
+            "qwerty",
+            "admin",
+            "admin123"
+        ];
+        if (passwordsComunes.includes(password.toLowerCase())) {
+            throw new Error('La contraseña es demasiado insegura');
+        }
 
-        if (usuarioExistente)
-            throw new Error('El email ya existe');
+        // 3. Verificar si el email ya existe en la base de datos
+        const usuarioExistente = await this.usuarioRepository.buscarPorEmail(email);
+        if (usuarioExistente) {
+            throw new Error('El email ya está registrado');
+        }
 
-        const hash = await bcrypt.hash(contraseña, 10);
+        // 4. Encriptar contraseña
+        const hash = await bcrypt.hash(password, 10);
 
-        const usuario = new Usuario(
+        // 5. Crear el modelo de dominio
+        const nuevoUsuario = new Usuario(
             null,
-            nombre,
-            apellido,
-            email,
+            nombre.trim(),
+            apellido.trim(),
+            email.trim().toLowerCase(),
             hash
         );
 
-        await this.usuarioRepository.crear(usuario);
-
-        return usuario;
-    }
-
-    async login(email, pass) {
-
-        const usuario =
-            await this.usuarioRepository.buscarPorEmail(email);
-
-        if (!usuario)
-            throw new Error('Usuario no encontrado');
-
-        const passwordCorrecta =
-            await bcrypt.compare(pass, usuario.contraseña);
-
-        if (!passwordCorrecta)
-            throw new Error('Contraseña incorrecta');
+        // 6. Persistir en la base de datos
+        await this.usuarioRepository.crear(nuevoUsuario);
 
         return {
-            id: usuario.id_usuario,
-            nombre: usuario.nombre,
-            apellido: usuario.apellido,
-            email: usuario.email
+            nombre: nuevoUsuario.nombre,
+            apellido: nuevoUsuario.apellido,
+            email: nuevoUsuario.email
         };
     }
 
-    async registrarUsuario({
-        nombre,
-        apellido,
-        email,
-        password
-    }) {
+    async login(email, password) {
+        if (!email || !email.trim()) {
+            throw new Error('Email obligatorio');
+        }
+        if (!password || !password.trim()) {
+            throw new Error('Contraseña obligatoria');
+        }
 
-        validarDatosRegistroUsuario({
-            nombre,
-            apellido,
-            email,
-            password
-        });
+        // 1. Buscar usuario por email
+        const usuario = await this.usuarioRepository.buscarPorEmail(email);
+        if (!usuario) {
+            throw new Error('Credenciales incorrectas');
+        }
 
-        const usuarioExistente =
-            await this.usuarioRepository.buscarPorEmail(email);
+        // 2. Verificar contraseña
+        const passwordCorrecta = await bcrypt.compare(password, usuario.contraseña);
+        if (!passwordCorrecta) {
+            throw new Error('Credenciales incorrectas');
+        }
 
-        if (usuarioExistente)
-            throw new Error('El email ya existe');
-
-        const hash =
-            await bcrypt.hash(password, 10);
-
-        const usuario = new Usuario(
-            null,
-            nombre,
-            apellido,
-            email,
-            hash
-        );
-
-        await this.usuarioRepository.crear(usuario);
-
+        // 3. Retornar datos del usuario autenticado (sin contraseña)
         return {
-            nombre,
-            apellido,
-            email
+            id_usuario: usuario.id_usuario,
+            nombre: usuario.nombre,
+            apellido: usuario.apellido,
+            email: usuario.email
         };
     }
 }
