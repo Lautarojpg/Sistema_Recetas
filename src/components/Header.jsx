@@ -1,6 +1,7 @@
 import { ChefHat } from "lucide-react";
 import UserMenu from "./UserMenu";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Header({ onLogin, user, onOpenRecipe }) {
   const navigate = useNavigate();
@@ -26,6 +27,9 @@ function Header({ onLogin, user, onOpenRecipe }) {
               </button>
             </li>
           )}
+          <li>
+            <Link to="/cocina">Cocina</Link>
+          </li>
         </ul>
 
         <UserMenu onLogin={onLogin} user={user} />

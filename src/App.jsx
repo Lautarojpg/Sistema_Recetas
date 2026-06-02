@@ -8,9 +8,10 @@ import RecipeForm from './components/RecipeForm';
 
 import RecipePage from "./pages/RecipePage";
 import Home from "./pages/Home";
+import CookingPage from "./pages/CookingPage";
 
 function App() {
-  const {user, setUser} = useSesion();
+  const { user, setUser } = useSesion();
   const [showRecipeForm, setShowRecipeForm] = useState(false);
 
   return (
@@ -28,6 +29,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home user={user} />} />
         <Route path="/receta/:id" element={<RecipePage user={user} />} />
+        <Route path="/cocina" element={<CookingPage user={user} />} />
       </Routes>
 
       <Footer />

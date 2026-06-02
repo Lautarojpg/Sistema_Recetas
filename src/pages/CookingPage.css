@@ -1,0 +1,182 @@
+.cooking-container {
+    min-height: calc(100vh - 200px);
+    background: #f5f5f5;
+    padding: 30px;
+}
+
+.cooking-title {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 2rem;
+}
+
+.cooking-layout {
+    display: flex;
+    gap: 25px;
+}
+
+.ingredients-panel {
+    width: 300px;
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .1);
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.ingredients-panel h2 {
+    margin-bottom: 15px;
+}
+
+.ingredients-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ingredient-card {
+    background: #fff7e6;
+    border: 2px solid #e0aa3e;
+    padding: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all .2s;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.ingredient-card:hover {
+    transform: translateY(-2px);
+    background: #ffe8b3;
+}
+
+.cooking-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+.pot {
+    width: 500px;
+    min-height: 500px;
+    border-radius: 30px;
+    background: white;
+    border: 5px dashed #888;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .15);
+}
+
+.pot-icon {
+    font-size: 90px;
+}
+
+.pot h2 {
+    margin: 10px 0;
+}
+
+.pot-ingredients {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.pot-item {
+    background: #ffe6e6;
+    border: 1px solid #ff9999;
+    padding: 8px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.pot-item:hover {
+    background: #ffd1d1;
+}
+
+.pot-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.cook-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.cook-btn:hover {
+    background: #218838;
+}
+
+.clear-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.clear-btn:hover {
+    background: #c82333;
+}
+
+.results-panel {
+    width: 100%;
+    max-width: 800px;
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .1);
+}
+
+.results-panel h2 {
+    margin-bottom: 15px;
+}
+
+.recipe-result {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+    transition: .2s;
+}
+
+.recipe-result:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+}
+
+.recipe-result h3 {
+    margin-bottom: 8px;
+}
+
+@media (max-width: 900px) {
+    .cooking-layout {
+        flex-direction: column;
+    }
+
+    .ingredients-panel {
+        width: 100%;
+    }
+
+    .pot {
+        width: 100%;
+        min-height: 400px;
+    }
+}
