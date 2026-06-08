@@ -52,7 +52,6 @@ class IngredienteRepository {
             .input('carbs', sql.Decimal(10, 2), ingrediente.carbs_por100)
             .input('grasas', sql.Decimal(10, 2), ingrediente.grasas_por100g)
             .input('icono', sql.VarChar, ingrediente.icono)
-            .input('id_coccion', sql.Int, ingrediente.id_coccion || null)
             .execute('sp_crear_ingrediente');
     }
 }

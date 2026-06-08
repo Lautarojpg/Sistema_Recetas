@@ -1,4 +1,4 @@
-import Receta from '../models/Receta.js';
+import RecetaBuilder from '../models/RecetaBuilder.js';
 import RecetaRepository from '../repositories/RecetaRepository.js';
 import IngredienteRepository from '../repositories/IngredienteRepository.js';
 
@@ -91,25 +91,21 @@ class RecetaService {
         const carbs_totales = Number(infoNutricional.carbs_totales) || 0;
         const aporte_calorico_total = Number(infoNutricional.aporte_calorico_total) || 0;
 
-        // Crear la entidad de negocio Receta
-        const receta = new Receta(
-            null,
-            datosReceta.nombre_receta.trim(),
-            datosReceta.descripcion ? datosReceta.descripcion.trim() : '',
-            datosReceta.porcion,
-            datosReceta.imagen || '',
-            datosReceta.tiempo_total,
-            datosReceta.dificultad || 'Fácil',
-            new Date(),
-            proteinas_totales,
-            grasas_totales,
-            carbs_totales,
-            aporte_calorico_total,
-            datosReceta.id_coccion || 1, // Default coccion
-            datosReceta.id_usuario,
-            ingredientesProcesados,
-            datosReceta.instrucciones || ''
-        );
+        // Crear la entidad de negocio Receta utilizando RecetaBuilder (Patrón Builder)
+        const receta = new RecetaBuilder()
+            .setNombre(datosReceta.nombre_receta.trim())
+            .setDescripcion(datosReceta.descripcion ? datosReceta.descripcion.trim() : '')
+            .setPorcion(datosReceta.porcion)
+            .setImagen(datosReceta.imagen || '')
+            .setTiempoTotal(datosReceta.tiempo_total)
+            .setDificultad(datosReceta.dificultad || 'Fácil')
+            .setFechaCreacion(new Date())
+            .setNutricion(proteinas_totales, grasas_totales, carbs_totales, aporte_calorico_total)
+            .setCoccion(datosReceta.id_coccion || 1)
+            .setUsuario(datosReceta.id_usuario)
+            .setIngredientes(ingredientesProcesados)
+            .setInstrucciones(datosReceta.instrucciones || [])
+            .build();
 
         // Guardar mediante el repositorio
         const id_receta = await this.recetaRepository.crear(receta);

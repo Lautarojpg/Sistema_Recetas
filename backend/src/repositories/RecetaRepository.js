@@ -30,13 +30,28 @@ class RecetaRepository {
         const id_receta = resultId.recordset[0].id_receta;
 
         // 3. Agregar instrucciones (si se proveen) usando sp_agregar_instruccion
-        if (receta.instrucciones) {
-            await connection.request()
-                .input('id_receta', sql.Int, id_receta)
-                .input('num_paso', sql.Int, 1)
-                .input('texto', sql.VarChar, receta.instrucciones)
-                .input('imagen', sql.VarChar, null)
-                .execute('sp_agregar_instruccion');
+        if (Array.isArray(receta.instrucciones)) {
+            for (let i = 0; i < receta.instrucciones.length; i++) {
+                const stepText = receta.instrucciones[i];
+                if (stepText && stepText.trim()) {
+                    await connection.request()
+                        .input('id_receta', sql.Int, id_receta)
+                        .input('num_paso', sql.Int, i + 1)
+                        .input('texto', sql.VarChar, stepText.trim())
+                        .input('imagen', sql.VarChar, null)
+                        .execute('sp_agregar_instruccion');
+                }
+            }
+        } else if (typeof receta.instrucciones === 'string' && receta.instrucciones.trim()) {
+            const steps = receta.instrucciones.split('\n').filter(s => s.trim());
+            for (let i = 0; i < steps.length; i++) {
+                await connection.request()
+                    .input('id_receta', sql.Int, id_receta)
+                    .input('num_paso', sql.Int, i + 1)
+                    .input('texto', sql.VarChar, steps[i].trim())
+                    .input('imagen', sql.VarChar, null)
+                    .execute('sp_agregar_instruccion');
+            }
         }
 
         // 4. Agregar ingredientes usando sp_agregar_ingrediente_a_receta

@@ -127,3 +127,21 @@ export const ingresarUsuario = async ({ form, onClose, onLogin }) => {
 
   return data;
 };
+
+export const crearIngrediente = async (ingrediente) => {
+  try {
+    const res = await fetch("http://localhost:3000/api/ingredients", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(ingrediente)
+    });
+    const data = await res.json();
+    if (!res.ok) throw data;
+    return data;
+  } catch (error) {
+    console.error("Error al crear ingrediente:", error);
+    throw error;
+  }
+};

@@ -42,7 +42,7 @@ async function seed() {
                 coccionSql += `INSERT INTO COCCION (id_coccion, nombre_tipo, descripcion, factor_calorico) VALUES (${c.id}, '${nombreEscaped}', '${descEscaped}', ${c.factor});\n`;
             }
             coccionSql += 'SET IDENTITY_INSERT COCCION OFF;\n';
-            
+
             const coccionReq = new sql.Request(transaction);
             await coccionReq.query(coccionSql);
 
@@ -70,16 +70,16 @@ async function seed() {
 
             // 4. Leer e Insertar Usuarios
             console.log('Cargando usuarios desde users.json...');
-            const usersFile = path.resolve('backend/users.json');
+            const usersFile = path.resolve('./users.json');
             const usersData = JSON.parse(fs.readFileSync(usersFile, 'utf-8'));
-            
+
             let userCounter = 1;
             const mappedUsers = [];
             const usersToInsert = [];
 
             for (const u of usersData) {
                 const email = (u.email || `usuario${userCounter}@mail.com`).toLowerCase().trim();
-                
+
                 if (mappedUsers.includes(email)) {
                     continue;
                 }
@@ -110,17 +110,43 @@ async function seed() {
             await usuarioReq.query(usuarioSql);
 
 
-            // 5. Leer e Insertar Ingredientes (sin omitir duplicados por nombre, ya que tienen IDs únicos y son referenciados por las recetas)
+            // 5. Leer e Insertar Ingredientes con iconos y valores nutricionales por defecto
             console.log('Cargando ingredientes desde ingredients.json...');
             const ingFile = path.resolve('backend/ingredients.json');
             const ingData = JSON.parse(fs.readFileSync(ingFile, 'utf-8'));
 
+            const defaultIngredientsData = {
+                'harina': { icono: '🌾', cal: 364, prot: 10, carbs: 76, gras: 1 },
+                'leche': { icono: '🥛', cal: 42, prot: 3.4, carbs: 5, gras: 1 },
+                'lechuga': { icono: '🥬', cal: 15, prot: 1.4, carbs: 2.9, gras: 0.2 },
+                'pollo': { icono: '🍗', cal: 165, prot: 31, carbs: 0, gras: 3.6 },
+                'carne': { icono: '🥩', cal: 250, prot: 26, carbs: 0, gras: 15 },
+                'pan': { icono: '🍞', cal: 265, prot: 9, carbs: 49, gras: 3.2 },
+                'pasta': { icono: '🍝', cal: 131, prot: 5, carbs: 25, gras: 1.1 },
+                'crema': { icono: '🥛', cal: 345, prot: 2, carbs: 3, gras: 37 },
+                'tortilla': { icono: '🫓', cal: 218, prot: 6, carbs: 45, gras: 3 },
+                'zanahoria': { icono: '🥕', cal: 41, prot: 0.9, carbs: 10, gras: 0.2 },
+                'papa': { icono: '🥔', cal: 77, prot: 2, carbs: 17, gras: 0.1 },
+                'pan rallado': { icono: '🍞', cal: 395, prot: 13, carbs: 72, gras: 5 },
+                'huevo': { icono: '🥚', cal: 155, prot: 13, carbs: 1.1, gras: 11 },
+                'queso': { icono: '🧀', cal: 402, prot: 25, carbs: 1.3, gras: 33 },
+                'arroz': { icono: '🍚', cal: 130, prot: 2.7, carbs: 28, gras: 0.3 },
+                'cebolla': { icono: '🧅', cal: 40, prot: 1.1, carbs: 9, gras: 0.1 },
+                'ajo': { icono: '🧄', cal: 149, prot: 6.4, carbs: 33, gras: 0.5 },
+                'aceite de oliva': { icono: '🫒', cal: 884, prot: 0, carbs: 0, gras: 100 },
+                'sal': { icono: '🧂', cal: 0, prot: 0, carbs: 0, gras: 0 }
+            };
+
             let ingredienteSql = 'SET IDENTITY_INSERT INGREDIENTE ON;\n';
-            
+
             for (const ing of ingData) {
                 const nombre = ing.nombre.trim();
                 const nombreEscaped = nombre.replace(/'/g, "''");
-                ingredienteSql += `INSERT INTO INGREDIENTE (id_ingrediente, nombre, calorias_por100g, proteinas_por100, carbs_por100, grasas_por100g, icono, id_coccion) VALUES (${ing.id_ingrediente}, '${nombreEscaped}', 0, 0, 0, 0, NULL, NULL);\n`;
+                const key = nombre.toLowerCase();
+                const info = defaultIngredientsData[key] || { icono: '🍎', cal: 50, prot: 1.5, carbs: 10, gras: 0.5 };
+                const iconoEscaped = info.icono.replace(/'/g, "''");
+
+                ingredienteSql += `INSERT INTO INGREDIENTE (id_ingrediente, nombre, calorias_por100g, proteinas_por100, carbs_por100, grasas_por100g, icono, id_coccion) VALUES (${ing.id_ingrediente}, '${nombreEscaped}', ${info.cal}, ${info.prot}, ${info.carbs}, ${info.gras}, '${iconoEscaped}', NULL);\n`;
             }
             ingredienteSql += 'SET IDENTITY_INSERT INGREDIENTE OFF;\n';
 

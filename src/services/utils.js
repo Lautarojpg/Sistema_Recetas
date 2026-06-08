@@ -6,7 +6,15 @@ export const validarCamposReceta = (form) => {
   if (!form.descripcion?.trim() || form.descripcion === "") errors.descripcion = "Descripción requerida";
   if(form.descripcion.length < 25) errors.descripcion = "Descripción debe tener al menos 25 caracteres";
   if (form.imagen && !/^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(form.imagen)) errors.imagen = "URL de imagen inválida";
-  if (!form.instrucciones?.trim() || form.instrucciones === "") errors.instrucciones = "Instrucciones requeridas";
+  if (Array.isArray(form.instrucciones)) {
+    if (form.instrucciones.length === 0 || form.instrucciones.every(s => !s || !s.trim())) {
+      errors.instrucciones = "Instrucciones requeridas";
+    }
+  } else {
+    if (!form.instrucciones?.trim() || form.instrucciones === "") {
+      errors.instrucciones = "Instrucciones requeridas";
+    }
+  }
 
   if (isNaN(form.tiempo_total) || form.tiempo_total <= 0 || form.tiempo_total === "") errors.tiempo_total = "Tiempo total debe ser un número positivo";
   if (isNaN(form.porcion) || form.porcion <= 0 || form.porcion === "") errors.porcion = "Porción debe ser un número positivo";
