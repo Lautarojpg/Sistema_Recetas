@@ -6,7 +6,7 @@ const router = express.Router();
 const controller = new RecetaController();
 
 // Públicas: lectura libre
-router.get('/recetas', controller.buscarTodasRecetas);
+router.get('/recetas', controller.buscarRecetas);
 router.get('/recetas/destacadas', controller.buscarRecetasDestacadas);
 router.get('/recetas/usuario/:id', controller.buscarRecetasPorUsuario);
 router.post('/recetas/filtrar', controller.filtrarRecetas);

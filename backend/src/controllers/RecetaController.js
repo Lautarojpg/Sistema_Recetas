@@ -5,7 +5,7 @@ class RecetaController {
         this.recetaService = new RecetaService();
     }
 
-    buscarTodasRecetas = async (req, res) => {
+    buscarRecetas = async (req, res) => {
         try {
             const busqueda = req.query.q || '';
             const recetas = await this.recetaService.buscarRecetas(busqueda);

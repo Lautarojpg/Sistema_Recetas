@@ -7,11 +7,16 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run --reporter=verbose"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
     "lucide-react": "^1.8.0",
+    "mssql": "^12.5.5",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.14.2"
@@ -32,7 +37,8 @@
     "globals": "^17.4.0",
     "postcss": "^8.5.10",
     "tailwindcss": "^4.2.2",
-    "vite": "^8.0.4"
+    "vite": "^8.0.4",
+    "vitest": "^4.1.8"
   },
   "description": "Sistema de búsqueda y gestión de recetas de cocina.",
   "repository": {

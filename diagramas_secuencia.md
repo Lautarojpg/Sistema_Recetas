@@ -18,15 +18,16 @@ sequenceDiagram
     Usuario->>Interfaz: ingresa datos de la receta
     
     opt Alternativo: auto-calcular nutrición
-        Usuario->>Ingredientes: solicita calcular info nutricional
-        Ingredientes->>Ingredientes: calcularNutricion(ingredientes)
-        Ingredientes-->>Usuario: muestra valores nutricionales calculados
+        Usuario->>Recetas: solicita calcular info nutricional
+        Recetas->>Recetas: calcularNutricion(ingredientes)
+        Recetas-->>Usuario: muestra valores nutricionales calculados
     end
 
     Usuario->>Interfaz: confirma guardar receta
     
     Interfaz->>Recetas: valida datos de la receta
     activate Recetas
+    Recetas->>Recetas: validarCamposReceta()
     Recetas->>Recetas: crearReceta(datosReceta)
     Recetas-->>Interfaz: muestra mensaje "Receta enviada"
     deactivate Recetas
@@ -46,12 +47,12 @@ sequenceDiagram
     Usuario->>Sistema: Escribe el nombre de la receta...
     Sistema->>Receta: busca recetas
     activate Receta
-    Receta->>Receta: buscarTodasRecetas(busqueda)
+    Receta->>Receta: buscarRecetas(busqueda)
     Receta-->>Sistema: Muestra las recetas que coincidan con la busqueda
     deactivate Receta
     Sistema-->>Usuario: Muestra las recetas que coincidan con la busqueda
 
-    opt Alternativo: no coincidencias
+    opt Alternativo: no coincidencias (usuario iniciado)
         
         Sistema->>Receta: busca recetas propias
         activate Receta
@@ -60,6 +61,16 @@ sequenceDiagram
         deactivate Receta
         
         Sistema-->>Usuario: Muestra mensaje "No se encontraron resultados" y muestra recetas propias
+    end
+
+    opt Alternativo: no coincidencias (sin usuario)
+
+        Sistema->>Receta: busca recetas propias
+        activate Receta
+        Receta->>Receta: buscarRecetasDestacadas()
+        Receta-->>Sistema: retorna recetas destacadas
+        deactivate Receta
+        Sistema-->>Usuario: Muestra mensaje "No se encontraron resultados" y muestra recetas destacadas
     end
 ```
 
