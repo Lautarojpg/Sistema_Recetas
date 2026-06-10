@@ -1,7 +1,7 @@
 import Searcher from "../components/Searcher";
 import SearchResults from "../components/SearchResults";
 import { useDestacadas, useRecetasUsuario} from "../services/hooks"
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export default function Home({ user }) {
     const [recetas, setRecetas] = useState([]);
@@ -18,7 +18,7 @@ export default function Home({ user }) {
   return (
     <>
     <Searcher alBuscar={alBuscar}  />
-    <SearchResults results={recetas} busqueda={busqueda} featured={destacadas} userRecipes={usuarioRecetas} user={user}/>
+    <SearchResults results={recetas} busqueda={busqueda} destacadas={destacadas} usuarioRecetas={usuarioRecetas} user={user}/>
     </>
   )
 }

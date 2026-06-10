@@ -11,13 +11,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",
-    "bcrypt": "^6.0.0",
-    "cors": "^2.8.6",
-    "dependencies": "^0.0.1",
-    "express": "^5.2.1",
     "lucide-react": "^1.8.0",
-    "mssql": "^12.5.5",
-    "nvm": "^0.0.4",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.14.2"
@@ -40,8 +34,7 @@
     "tailwindcss": "^4.2.2",
     "vite": "^8.0.4"
   },
-  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
-  "main": "eslint.config.js",
+  "description": "Sistema de búsqueda y gestión de recetas de cocina.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Lautarojpg/Sistema_Recetas.git"

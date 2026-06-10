@@ -112,7 +112,7 @@ async function seed() {
 
             // 5. Leer e Insertar Ingredientes con iconos y valores nutricionales por defecto
             console.log('Cargando ingredientes desde ingredients.json...');
-            const ingFile = path.resolve('backend/ingredients.json');
+            const ingFile = path.resolve('./ingredients.json');
             const ingData = JSON.parse(fs.readFileSync(ingFile, 'utf-8'));
 
             const defaultIngredientsData = {
@@ -156,7 +156,7 @@ async function seed() {
 
             // 6. Leer e Insertar Recetas, sus ingredientes relacionales e instrucciones
             console.log('Cargando recetas desde recipes.json...');
-            const recFile = path.resolve('backend/recipes.json');
+            const recFile = path.resolve('./recipes.json');
             const recData = JSON.parse(fs.readFileSync(recFile, 'utf-8'));
 
             let recetaSql = 'SET IDENTITY_INSERT RECETA ON;\n';

@@ -1,0 +1,23 @@
+sequenceDiagram
+    actor Usuario
+    participant Interfaz as Interfaz (Sistema)
+    participant Etiqueta
+    participant Receta
+
+    Usuario->>Interfaz: Ingresa a la página principal
+    Interfaz->>Etiqueta: Solicita categorías
+    Etiqueta->>Etiqueta: obtenerTodas()
+    Etiqueta-->>Interfaz: Devuelve categorías
+    Interfaz-->>Usuario: Muestra categorías disponibles
+
+    Usuario->>Interfaz: Selecciona una categoría
+    Interfaz->>Receta: Solicita recetas por categoría
+    Receta->>Receta: buscarPorEtiqueta(idEtiqueta)
+    Receta-->>Interfaz: Devuelve recetas filtradas
+    Interfaz-->>Usuario: Muestra recetas de la categoría
+
+    Usuario->>Interfaz: Cambia de categoría
+    Interfaz->>Receta: Solicita recetas para nueva categoría
+    Receta->>Receta: buscarPorEtiqueta(idEtiqueta)
+    Receta-->>Interfaz: Devuelve nuevas recetas
+    Interfaz-->>Usuario: Actualiza vista con nuevas recetas

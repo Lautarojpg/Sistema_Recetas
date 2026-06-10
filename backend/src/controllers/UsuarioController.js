@@ -5,11 +5,11 @@ class UsuarioController {
         this.usuarioService = new UsuarioService();
     }
 
-    registrar = async (req, res) => {
+    registrarUsuario = async (req, res) => {
         try {
             const { nombre, apellido, email, password } = req.body;
             const result = await this.usuarioService.registrar({ nombre, apellido, email, password });
-            return res.status(200).json({ message: "Usuario creado", ...result });
+            return res.status(201).json({ message: "Usuario creado", ...result });
         } catch (error) {
             console.error("Error en registro:", error);
             
@@ -29,17 +29,16 @@ class UsuarioController {
         }
     }
 
-    login = async (req, res) => {
+    loginUsuario = async (req, res) => {
         try {
             const { email, password } = req.body;
             const user = await this.usuarioService.login(email, password);
-            console.log("Usuario logueado correctamente:", user);
+
             return res.status(200).json(user);
         } catch (error) {
-            console.error("Error en login:", error);
             
             if (error.message.includes('Credenciales') || error.message.includes('incorrectas') || error.message.includes('no encontrado')) {
-                return res.status(401).json({ error: "Credencialesss incorrectas" }); // Con las 3 's' que tenía la respuesta original para mantener compatibilidad
+                return res.status(401).json({ error: "Credenciales incorrectas" });
             }
             
             return res.status(400).json({ error: error.message });

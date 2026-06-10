@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { publicarReceta } from "../services/api.js";
+import { publicarReceta, calcularNutricion } from "../services/api.js";
 import { validarCamposReceta } from "../services/utils.js";
 import { useIngredientes } from "../services/hooks.js";
 import { ArrowLeft, ArrowRight, Save, Plus, Trash, Calculator, Check, ChefHat } from "lucide-react";
@@ -13,10 +13,14 @@ export default function CreateRecipePage({ user }) {
   // Redirigir si no hay sesión iniciada
   useEffect(() => {
     if (!user) {
-      alert("Debes iniciar sesión para crear recetas");
       navigate("/");
     }
   }, [user, navigate]);
+
+  // No renderizar nada si no hay usuario (evita flash del formulario)
+  if (!user) {
+    return null;
+  }
 
   const [pasoActual, setPasoActual] = useState(1);
   const [buscarIngrediente, setBuscarIngrediente] = useState("");
@@ -58,6 +62,25 @@ export default function CreateRecipePage({ user }) {
         [e.target.name]: e.target.value
       }
     });
+  };
+
+  const handleSubirImagen = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 1048576) { // 1MB en bytes
+        alert("La imagen excede el peso máximo permitido de 1MB.");
+        e.target.value = ""; // Limpiar input
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setForm({
+          ...form,
+          imagen: reader.result // Base64 string
+        });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   // --- Manejo de Instrucciones ---
@@ -120,38 +143,49 @@ export default function CreateRecipePage({ user }) {
   };
 
   // --- Auto Calcular Info Nutricional ---
-  const autoCalcularNutricion = () => {
-    let totalCal = 0;
-    let totalProt = 0;
-    let totalCarbs = 0;
-    let totalGrasas = 0;
-
-    form.ingredientes.forEach(ing => {
-      const dbIng = ingredientesDB.find(i => i.id_ingrediente === ing.id_ingrediente);
-      const cant = Number(ing.cantidad);
-      if (dbIng && !isNaN(cant) && cant > 0) {
-        // Los valores de la DB son por 100g. Si la unidad es g o ml, asumimos peso directo.
-        // Si es "unidad", tomamos un peso promedio de 100g para el cálculo, o proporcional.
-        let factor = cant / 100;
-        if (ing.unidad === "unidad") {
-          factor = cant; // Asumir que 1 unidad tiene el valor nutricional de 100g para el cálculo
+  const autoCalcularNutricion = async (ingredientes) => {
+    try {
+      const nutricionCalculada = await calcularNutricion(ingredientes);
+      setForm({
+        ...form,
+        info_nutricional: {
+          proteinas_totales: nutricionCalculada.proteinas_totales,
+          grasas_totales: nutricionCalculada.grasas_totales,
+          carbs_totales: nutricionCalculada.carbs_totales,
+          aporte_calorico_total: nutricionCalculada.aporte_calorico_total
         }
-        totalCal += (dbIng.calorias_por100g || 0) * factor;
-        totalProt += (dbIng.proteinas_por100 || 0) * factor;
-        totalCarbs += (dbIng.carbs_por100 || 0) * factor;
-        totalGrasas += (dbIng.grasas_por100g || 0) * factor;
-      }
-    });
+      });
+    } catch (error) {
+      alert("Hubo un error al auto-calcular los valores nutricionales desde el servidor.");
+    }
+  };
 
-    setForm({
-      ...form,
-      info_nutricional: {
-        proteinas_totales: Math.round(totalProt * 10) / 10,
-        grasas_totales: Math.round(totalGrasas * 10) / 10,
-        carbs_totales: Math.round(totalCarbs * 10) / 10,
-        aporte_calorico_total: Math.round(totalCal)
+  // --- Manejo de Navegacion del Wizard ---
+  const avanzarPaso = () => {
+    if (pasoActual === 1) {
+      if (!form.nombre_receta.trim() || !form.descripcion.trim() || !form.tiempo_total || !form.porcion) {
+        alert("Por favor completa todos los campos obligatorios (Nombre, Descripción, Tiempo y Porciones) antes de avanzar.");
+        return;
       }
-    });
+    } else if (pasoActual === 2) {
+      if (form.ingredientes.length === 0) {
+        alert("Debes agregar al menos un ingrediente a la receta.");
+        return;
+      }
+      const incompletos = form.ingredientes.some(i => !i.cantidad || i.cantidad <= 0);
+      if (incompletos) {
+        alert("Asegúrate de ingresar una cantidad válida para todos los ingredientes seleccionados.");
+        return;
+      }
+    } else if (pasoActual === 3) {
+      const vacios = form.instrucciones.some(inst => !inst || inst.trim() === "");
+      if (vacios) {
+        alert("Por favor completa todos los pasos de la preparación o elimina los campos vacíos.");
+        return;
+      }
+    }
+    
+    setPasoActual(pasoActual + 1);
   };
 
   // --- Guardar Receta ---
@@ -175,8 +209,9 @@ export default function CreateRecipePage({ user }) {
     const errores = validarCamposReceta(datosParaValidar);
     if (Object.keys(errores).length > 0) {
       setErroresFormulario(errores);
+      alert("Hay errores de validación en el formulario. Por favor revisa todos los pasos.");
       // Ir al paso donde esté el error si es posible
-      if (errores.nombre_receta || errores.descripcion || errores.tiempo_total || errores.porcion) {
+      if (errores.nombre_receta || errores.descripcion || errores.tiempo_total || errores.porcion || errores.imagen) {
         setPasoActual(1);
       } else if (errores.ingredientes) {
         setPasoActual(2);
@@ -194,11 +229,14 @@ export default function CreateRecipePage({ user }) {
       alert("¡Receta creada con éxito y enviada para revisión!");
       navigate("/");
     } catch (err) {
-      console.error(err);
+      console.error("Error al guardar:", err);
       if (err.errors) {
         setErroresFormulario(err.errors);
+        alert("El servidor rechazó algunos campos. Revisa el formulario.");
+      } else if (err.error) {
+        alert(err.error); // Para errores como el de token expirado
       } else {
-        alert(err.general || "Error al conectar con el servidor.");
+        alert(err.general || err.message || "Error al conectar con el servidor.");
       }
     }
   };
@@ -318,14 +356,24 @@ export default function CreateRecipePage({ user }) {
                 </div>
 
                 <div className="form-group">
-                  <label>Imagen (URL)</label>
-                  <input
-                    type="text"
-                    name="imagen"
-                    value={form.imagen}
-                    onChange={handleCambio}
-                    placeholder="https://ejemplo.com/imagen.jpg"
-                  />
+                  <label>Imagen de la Receta</label>
+                  <div className="file-upload-container">
+                    <input
+                      type="file"
+                      id="imagen-upload"
+                      accept="image/*"
+                      onChange={handleSubirImagen}
+                      className="file-input-hidden"
+                    />
+                    <label htmlFor="imagen-upload" className="file-upload-btn">
+                      Seleccionar Imagen
+                    </label>
+                    {form.imagen ? (
+                       <span className="file-name-success">¡Imagen cargada correctamente!</span>
+                    ) : (
+                       <span className="file-name-placeholder">Ningún archivo seleccionado</span>
+                    )}
+                  </div>
                   {erroresFormulario.imagen && <span className="error-text">{erroresFormulario.imagen}</span>}
                 </div>
               </div>
@@ -472,7 +520,7 @@ export default function CreateRecipePage({ user }) {
 
               <button
                 type="button"
-                onClick={autoCalcularNutricion}
+                onClick={() => autoCalcularNutricion(form.ingredientes)}
                 className="calculate-btn"
                 disabled={form.ingredientes.length === 0}
               >
@@ -489,6 +537,7 @@ export default function CreateRecipePage({ user }) {
                     onChange={handleCambioNutricional}
                     placeholder="Ej. 25"
                     min="0"
+                    step="any"
                     required
                   />
                 </div>
@@ -502,6 +551,7 @@ export default function CreateRecipePage({ user }) {
                     onChange={handleCambioNutricional}
                     placeholder="Ej. 12"
                     min="0"
+                    step="any"
                     required
                   />
                 </div>
@@ -515,6 +565,7 @@ export default function CreateRecipePage({ user }) {
                     onChange={handleCambioNutricional}
                     placeholder="Ej. 60"
                     min="0"
+                    step="any"
                     required
                   />
                 </div>
@@ -528,6 +579,7 @@ export default function CreateRecipePage({ user }) {
                     onChange={handleCambioNutricional}
                     placeholder="Ej. 450"
                     min="0"
+                    step="any"
                     required
                   />
                 </div>
@@ -559,7 +611,7 @@ export default function CreateRecipePage({ user }) {
               <button
                 type="button"
                 className="nav-btn next-btn"
-                onClick={() => setPasoActual(pasoActual + 1)}
+                onClick={avanzarPaso}
               >
                 Siguiente <ArrowRight size={16} />
               </button>

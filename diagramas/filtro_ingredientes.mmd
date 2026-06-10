@@ -1,0 +1,23 @@
+sequenceDiagram
+    actor Usuario
+    participant Interfaz as Interfaz (Sistema)
+    participant Ingrediente
+    participant Receta
+
+    Usuario->>Interfaz: Ingresa a la sección Cocina
+    Interfaz->>Ingrediente: Solicita lista de ingredientes
+    Ingrediente->>Ingrediente: obtenerTodos()
+    Ingrediente-->>Interfaz: Devuelve ingredientes
+    Interfaz->>Receta: Solicita lista de recetas
+    Receta->>Receta: buscarRecetas("")
+    Receta-->>Interfaz: Devuelve recetas
+    Interfaz-->>Usuario: Muestra ingredientes disponibles
+
+    Usuario->>Interfaz: Selecciona ingredientes
+    Interfaz->>Interfaz: agregarIngrediente(ingrediente)
+    Interfaz-->>Usuario: Muestra ingredientes en la olla
+
+    Usuario->>Interfaz: Presiona "Cocinar"
+    Interfaz->>Interfaz: buscarRecetas()
+    Note right of Interfaz: Compara ingredientes de la olla con los de las recetas
+    Interfaz-->>Usuario: Muestra recetas con coincidencia

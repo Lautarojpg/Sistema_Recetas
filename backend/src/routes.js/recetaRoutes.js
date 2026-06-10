@@ -1,12 +1,18 @@
 import express from 'express';
 import RecetaController from '../controllers/RecetaController.js';
+import { verificarSesion } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 const controller = new RecetaController();
 
-router.get('/recetas', controller.buscarTodos);
-router.get('/recetas/destacadas', controller.buscarDestacadas);
-router.get('/recetas/usuario/:id', controller.buscarPorUsuario);
-router.post('/recipes', controller.crear);
+// Públicas: lectura libre
+router.get('/recetas', controller.buscarTodasRecetas);
+router.get('/recetas/destacadas', controller.buscarRecetasDestacadas);
+router.get('/recetas/usuario/:id', controller.buscarRecetasPorUsuario);
+router.post('/recetas/filtrar', controller.filtrarRecetas);
+router.post('/recetas/calcular-nutricion', controller.calcularNutricion);
+
+// Protegida: solo usuarios autenticados pueden crear recetas
+router.post('/recetas', verificarSesion, controller.crearReceta);
 
 export default router;

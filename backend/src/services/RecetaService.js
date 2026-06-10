@@ -133,6 +133,81 @@ class RecetaService {
         }
         return await this.recetaRepository.buscarPorId(idReceta);
     }
+
+    async filtrarRecetas(ingredientes, filtros) {
+        const todas = await this.buscarRecetas('');
+        
+        let coincidencias = todas;
+        
+        // 1. Filtrar por ingredientes
+        if (ingredientes && ingredientes.length > 0) {
+            const idsOlla = ingredientes.map(i => String(i.id_ingrediente));
+            coincidencias = todas.filter(receta => {
+                const ingredientesReceta = receta.ingredientes || [];
+                if (ingredientesReceta.length === 0) return false;
+                const idsReceta = ingredientesReceta.map(i => String(i.id_ingrediente));
+                return idsOlla.every(id => idsReceta.includes(id));
+            }).map(receta => {
+                const ingredientesReceta = receta.ingredientes || [];
+                const idsReceta = ingredientesReceta.map(i => String(i.id_ingrediente));
+                const encontrados = idsReceta.filter(id => idsOlla.includes(id));
+                const porcentaje = Math.round((encontrados.length / idsReceta.length) * 100);
+                return { ...receta, porcentaje };
+            }).sort((a, b) => b.porcentaje - a.porcentaje);
+        } else {
+            return [];
+        }
+
+        // 2. Filtrar por filtros avanzados
+        if (filtros) {
+            const normalizeStr = (str) => str ? String(str).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() : "";
+            const filtroDificultad = normalizeStr(filtros.dificultad);
+
+            coincidencias = coincidencias.filter(receta => {
+                if (filtroDificultad && normalizeStr(receta.dificultad) !== filtroDificultad) return false;
+                if (filtros.tiempoMax && Number(receta.tiempo_total) > Number(filtros.tiempoMax)) return false;
+                if (filtros.proteinasMax && Number(receta.info_nutricional?.proteinas_totales) > Number(filtros.proteinasMax)) return false;
+                if (filtros.carbsMax && Number(receta.info_nutricional?.carbs_totales) > Number(filtros.carbsMax)) return false;
+                if (filtros.grasasMax && Number(receta.info_nutricional?.grasas_totales) > Number(filtros.grasasMax)) return false;
+                return true;
+            });
+        }
+
+        return coincidencias;
+    }
+
+    async calcularNutricion(ingredientes) {
+        if (!ingredientes || !Array.isArray(ingredientes)) {
+            return { proteinas_totales: 0, grasas_totales: 0, carbs_totales: 0, aporte_calorico_total: 0 };
+        }
+        
+        const todosLosIngredientes = await this.ingredienteRepository.buscarTodos();
+        let totalCal = 0;
+        let totalProt = 0;
+        let totalCarbs = 0;
+        let totalGrasas = 0;
+
+        ingredientes.forEach(ing => {
+            const dbIng = todosLosIngredientes.find(i => i.id_ingrediente === ing.id_ingrediente);
+            const cant = Number(ing.cantidad);
+            if (dbIng && !isNaN(cant) && cant > 0) {
+                let factor = cant / 100;
+                if (ing.unidad === "unidad") factor = cant;
+                
+                totalCal += (dbIng.calorias_por100g || 0) * factor;
+                totalProt += (dbIng.proteinas_por100 || 0) * factor;
+                totalCarbs += (dbIng.carbs_por100 || 0) * factor;
+                totalGrasas += (dbIng.grasas_por100g || 0) * factor;
+            }
+        });
+
+        return {
+            proteinas_totales: Math.round(totalProt * 10) / 10,
+            grasas_totales: Math.round(totalGrasas * 10) / 10,
+            carbs_totales: Math.round(totalCarbs * 10) / 10,
+            aporte_calorico_total: Math.round(totalCal)
+        };
+    }
 }
 
 export default RecetaService;

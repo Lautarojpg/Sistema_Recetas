@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import Usuario from '../models/Usuario.js';
 import UsuarioRepository from '../repositories/UsuarioRepository.js';
+import { generarToken } from '../middlewares/authMiddleware.js';
 
 class UsuarioService {
     constructor() {
@@ -83,12 +84,19 @@ class UsuarioService {
             throw new Error('Credenciales incorrectas');
         }
 
-        // 3. Retornar datos del usuario autenticado (sin contraseña)
-        return {
+        // 3. Generar token y retornar datos del usuario autenticado (sin contraseña)
+        const datosUsuario = {
             id_usuario: usuario.id_usuario,
             nombre: usuario.nombre,
             apellido: usuario.apellido,
             email: usuario.email
+        };
+
+        const token = generarToken(datosUsuario);
+
+        return {
+            ...datosUsuario,
+            token
         };
     }
 }

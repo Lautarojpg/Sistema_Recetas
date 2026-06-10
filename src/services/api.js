@@ -1,8 +1,25 @@
+// Helper para obtener headers con token de autenticación
+function obtenerCabecerasAutenticacion() {
+  const session = localStorage.getItem("session");
+  const headers = { "Content-Type": "application/json" };
+  if (session) {
+    try {
+      const user = JSON.parse(session);
+      if (user?.token) {
+        headers["Authorization"] = `Bearer ${user.token}`;
+      }
+    } catch (e) {
+      // Session inválida
+    }
+  }
+  return headers;
+}
+
 // Fetch a ingredientes
 
 export const buscarIngredientes = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/ingredients");
+      const res = await fetch("/api/ingredients");
       return await res.json();
   }   catch (error) {
       console.error("Error trayendo ingredientes:", error);
@@ -14,7 +31,7 @@ export const buscarIngredientes = async () => {
 
 export const buscarDestacadas = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/recetas/destacadas");
+      const res = await fetch("/api/recetas/destacadas");
 
       if (!res.ok) throw new Error("Error en API");
 
@@ -29,7 +46,7 @@ export const buscarDestacadas = async () => {
 
 export const buscarReceta = async (busqueda) => {
   try {
-    const response = await fetch(`http://localhost:3000/api/recetas?q=${busqueda}`);
+    const response = await fetch(`/api/recetas?q=${encodeURIComponent(busqueda)}`);
     return await response.json();
   } catch (error) {
     console.error("Error al buscar recetas:", error);
@@ -37,9 +54,19 @@ export const buscarReceta = async (busqueda) => {
   }
 };
 
+export const buscarTodasRecetas = async () => {
+  try {
+    const response = await fetch("/api/recetas");
+    return await response.json();
+  } catch (error) {
+    console.error("Error al buscar todas las recetas:", error);
+    return [];
+  }
+};
+
 export const buscarRecetasUsuario = async (user) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/recetas/usuario/${user.id_usuario}`);
+      const res = await fetch(`/api/recetas/usuario/${user.id_usuario}`);
       const data = await res.json();
       return data;
     } catch (error) {
@@ -50,13 +77,20 @@ export const buscarRecetasUsuario = async (user) => {
 
  export const publicarReceta = async (form) => {
   try {
-    const res = await fetch("http://localhost:3000/api/recipes", {
+    let res = await fetch("/api/recetas", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: obtenerCabecerasAutenticacion(),
       body: JSON.stringify(form)
     });
+
+    // Fallback: Si el servidor backend no se reinició correctamente y sigue usando la ruta vieja
+    if (res.status === 404) {
+      res = await fetch("/api/recipes", {
+        method: "POST",
+        headers: obtenerCabecerasAutenticacion(),
+        body: JSON.stringify(form)
+      });
+    }
 
     const data = await res.json();
 
@@ -67,50 +101,61 @@ export const buscarRecetasUsuario = async (user) => {
     return data;
 
   } catch (error) {
-    console.error(error);
+    console.error("Error en publicarReceta:", error);
 
-    if (error.errors || error.general) {
+    if (error.errors || error.general || error.error) {
       throw error;
     }
 
     throw {
-      general: "Error en el servidor"
+      general: error.message || "Error en el servidor"
     };
+  }
+};
+
+export const calcularNutricion = async (ingredientes) => {
+  try {
+    const res = await fetch("/api/recetas/calcular-nutricion", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ingredientes })
+    });
+    
+    if (!res.ok) {
+      throw new Error("Error al calcular nutrición en el servidor");
+    }
+    
+    return await res.json();
+  } catch (error) {
+    console.error("Error en calcularNutricion:", error);
+    throw error;
   }
 };
 
 // Fetch login
 
-export const ingresarUsuario = async ({ form, onClose, onLogin }) => {
-  try {
-      const res = await fetch("http://localhost:3000/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(form)
-      });
+export const ingresarUsuario = async (form) => {
+  const res = await fetch("/api/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(form)
+  });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        alert(errorData.error || "Error al iniciar sesión");
-        return;
-      }
+  const data = await res.json();
 
-      const user = await res.json();
-
-      onLogin(user);
-      onClose();
-
-    } catch (err) {
-      console.error(err);
-    }
+  if (!res.ok) {
+    throw new Error(data.error || "Error al iniciar sesión");
   }
+
+  return data;
+};
 
   // Fetch Registrar
 
  export const registrarUsuario = async (form) => {
-  const res = await fetch("http://localhost:3000/api/register", {
+  const res = await fetch("/api/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -122,7 +167,6 @@ export const ingresarUsuario = async ({ form, onClose, onLogin }) => {
 
   if (!res.ok) {
     throw data;
-    alert("Error en la api");
   }
 
   return data;
@@ -130,11 +174,9 @@ export const ingresarUsuario = async ({ form, onClose, onLogin }) => {
 
 export const crearIngrediente = async (ingrediente) => {
   try {
-    const res = await fetch("http://localhost:3000/api/ingredients", {
+    const res = await fetch("/api/ingredients", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: obtenerCabecerasAutenticacion(),
       body: JSON.stringify(ingrediente)
     });
     const data = await res.json();

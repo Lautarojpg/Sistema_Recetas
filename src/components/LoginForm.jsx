@@ -6,6 +6,8 @@ export default function LoginForm({ onClose, onLogin }) {
     email: "",
     password: ""
   });
+  const [error, setError] = useState(null);
+  const [cargando, setCargando] = useState(false);
 
   const handleCambio = (e) => {
     setForm({
@@ -14,9 +16,25 @@ export default function LoginForm({ onClose, onLogin }) {
     });
   };
 
-  const presionarIngresar = (e) => {
+  const presionarIngresar = async (e) => {
     e.preventDefault();
-    ingresarUsuario({ form, onClose, onLogin });
+    setError(null);
+
+    if (!form.email.trim() || !form.password.trim()) {
+      setError("Completa todos los campos");
+      return;
+    }
+
+    setCargando(true);
+    try {
+      const user = await ingresarUsuario(form);
+      onLogin(user);
+      onClose();
+    } catch (err) {
+      setError(err.message || "Error al iniciar sesión");
+    } finally {
+      setCargando(false);
+    }
   };
 
   return (
@@ -24,14 +42,16 @@ export default function LoginForm({ onClose, onLogin }) {
       <form className="login-form" onSubmit={presionarIngresar}>
         <h3>Ingresar</h3>
 
-        <input name="email" placeholder="Email" onChange={handleCambio} />
-        <input name="password" type="password" placeholder="Contraseña" onChange={handleCambio} />
+        {error && <p style={{ color: "#e74c3c", fontSize: "14px", margin: "0 0 10px" }}>{error}</p>}
 
-        <button type="submit">Ingresar</button>
+        <input name="email" placeholder="Email" value={form.email} onChange={handleCambio} />
+        <input name="password" type="password" placeholder="Contraseña" value={form.password} onChange={handleCambio} />
+
+        <button type="submit" disabled={cargando}>
+          {cargando ? "Ingresando..." : "Ingresar"}
+        </button>
         <button type="button" onClick={onClose}>Cancelar</button>
       </form>
     </div>
   );
 }
-
-

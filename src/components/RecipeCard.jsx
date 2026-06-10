@@ -34,6 +34,12 @@ function RecipeCard({ recipe }) {
             <span className="time-badge">
               {recipe.tiempo_total} min
             </span>
+
+            {recipe.porcentaje !== undefined && (
+              <span style={{ backgroundColor: '#28a745', color: 'white', padding: '4px 8px', borderRadius: '12px', fontSize: '12px', fontWeight: 'bold' }}>
+                {recipe.porcentaje}% Match
+              </span>
+            )}
           </div>
         </div>
 

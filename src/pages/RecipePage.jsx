@@ -6,7 +6,7 @@ export default function RecipePage() {
   const [recipe, setRecipe] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/api/recetas`)
+    fetch(`/api/recetas`)
       .then(res => res.json())
       .then(data => {
         const found = data.find(r => r.id_receta === parseInt(id));

@@ -1,0 +1,41 @@
+sequenceDiagram
+    actor Usuario
+    participant Interfaz as Interfaz (Sistema)
+    participant Etiqueta
+    participant Coccion
+    participant Ingrediente
+    participant Receta
+
+    Usuario->>Interfaz: Ingresa al sistema de recetas
+    
+    par Carga de filtros
+        Interfaz->>Etiqueta: Solicita categorías
+        Etiqueta->>Etiqueta: obtenerTodas()
+        Etiqueta-->>Interfaz: Devuelve categorías
+    and
+        Interfaz->>Coccion: Solicita tipos de cocción
+        Coccion->>Coccion: obtenerTodos()
+        Coccion-->>Interfaz: Devuelve tipos de cocción
+    and
+        Interfaz->>Ingrediente: Solicita ingredientes
+        Ingrediente->>Ingrediente: obtenerTodos()
+        Ingrediente-->>Interfaz: Devuelve ingredientes
+    end
+    
+    Interfaz-->>Usuario: Muestra opciones de filtrado
+
+    alt Filtrado Estándar (Categorías, Dificultad, etc.)
+        Usuario->>Interfaz: Configura filtros (ej. "Pastas", "Fácil")
+        Usuario->>Interfaz: Presiona "Aplicar"
+        Interfaz->>Receta: Solicita recetas filtradas
+        Receta->>Receta: buscarConFiltros(filtros)
+        Receta-->>Interfaz: Devuelve recetas coincidentes
+        Interfaz-->>Usuario: Muestra resultados en pantalla
+    else Filtrado por Ingredientes (Modo Cocina)
+        Usuario->>Interfaz: Selecciona ingredientes
+        Interfaz->>Interfaz: agregarIngrediente(ingrediente)
+        Usuario->>Interfaz: Presiona "Cocinar"
+        Interfaz->>Interfaz: buscarRecetas()
+        Note right of Interfaz: Compara la olla con las recetas
+        Interfaz-->>Usuario: Muestra recetas ordenadas por % coincidencia
+    end

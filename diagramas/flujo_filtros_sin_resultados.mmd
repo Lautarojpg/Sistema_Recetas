@@ -1,0 +1,18 @@
+sequenceDiagram
+    actor Usuario
+    participant Interfaz as Interfaz (Sistema)
+    participant Receta
+
+    Usuario->>Interfaz: Ingresa filtros muy restrictivos
+    Usuario->>Interfaz: Presiona "Aplicar"
+    Interfaz->>Receta: Solicita recetas filtradas
+    Receta->>Receta: buscarConFiltros(filtros)
+    Receta-->>Interfaz: Devuelve lista vacía ([])
+    Interfaz-->>Usuario: Muestra mensaje "No se encontraron resultados"
+
+    Usuario->>Interfaz: Presiona "Limpiar filtros"
+    Interfaz->>Interfaz: vaciarOlla() / resetearFiltros()
+    Interfaz->>Receta: Solicita recetas sin filtro
+    Receta->>Receta: buscarTodos("")
+    Receta-->>Interfaz: Devuelve catálogo completo
+    Interfaz-->>Usuario: Muestra todas las recetas

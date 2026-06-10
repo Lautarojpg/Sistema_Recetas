@@ -1,0 +1,19 @@
+sequenceDiagram
+    actor Usuario
+    participant Interfaz as Interfaz (Sistema)
+    participant Receta
+
+    Usuario->>Interfaz: Configura filtros y busca
+    Interfaz->>Receta: Solicita recetas filtradas
+    Receta->>Receta: buscarConFiltros(filtros)
+    
+    Note right of Receta: Fallo en la base de datos o timeout
+    Receta-->>Interfaz: Retorna error de conexión (500)
+    
+    Interfaz-->>Usuario: Muestra alerta "Problemas con el servidor"
+    
+    Usuario->>Interfaz: Presiona "Reintentar"
+    Interfaz->>Receta: Solicita recetas filtradas nuevamente
+    Receta->>Receta: buscarConFiltros(filtros)
+    Receta-->>Interfaz: Devuelve recetas correctamente
+    Interfaz-->>Usuario: Muestra resultados de la búsqueda
