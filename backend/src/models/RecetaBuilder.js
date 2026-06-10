@@ -1,4 +1,19 @@
+import { z } from 'zod';
 import Receta from './Receta.js';
+
+const RecetaSchema = z.object({
+    nombre_receta: z.string().min(1, 'El nombre de la receta es obligatorio'),
+    descripcion: z.string().min(1, 'La descripción es obligatoria'),
+    porcion: z.number().positive('Las porciones deben ser un número positivo'),
+    tiempo_total: z.number().nonnegative('El tiempo total no puede ser negativo'),
+    dificultad: z.enum(['Fácil', 'Medio', 'Difícil'], {
+        errorMap: () => ({ message: 'La dificultad debe ser Fácil, Medio o Difícil' })
+    }),
+    id_coccion: z.number().int().positive('El tipo de cocción es obligatorio'),
+    id_usuario: z.number().int().positive('El usuario es obligatorio'),
+    ingredientes: z.array(z.any()).min(1, 'Debe tener al menos un ingrediente'),
+    instrucciones: z.string().min(1, 'Las instrucciones son obligatorias'),
+});
 
 class RecetaBuilder {
     constructor() {
@@ -94,6 +109,23 @@ class RecetaBuilder {
     }
 
     build() {
+        const result = RecetaSchema.safeParse({
+            nombre_receta: this.nombre_receta,
+            descripcion: this.descripcion,
+            porcion: this.porcion,
+            tiempo_total: this.tiempo_total,
+            dificultad: this.dificultad,
+            id_coccion: this.id_coccion,
+            id_usuario: this.id_usuario,
+            ingredientes: this.ingredientes,
+            instrucciones: this.instrucciones,
+        });
+
+        if (!result.success) {
+            const errores = result.error.errors.map(e => e.message).join(', ');
+            throw new Error(`Receta inválida: ${errores}`);
+        }
+
         const receta = new Receta(
             this.id_receta,
             this.nombre_receta,
