@@ -21,7 +21,7 @@ vi.mock('../src/repositories/IngredienteRepository.js', () => {
     };
 });
 
-describe('', () => {
+describe('Funcionalidades Backend: RecetaService (Lógica de Negocio)', () => {
     let recetaService;
 
     // 'beforeEach' se ejecuta automáticamente antes de cada prueba individual
@@ -63,10 +63,12 @@ describe('', () => {
 
             const datosReceta = {
                 nombre_receta: "Pizza de Queso",
+                descripcion: "Rica pizza",
                 tiempo_total: 30,
                 porcion: 4,
                 id_usuario: 1,
-                ingredientes: [{ nombre: "Queso", cantidad: 200, unidad: "g" }]
+                ingredientes: [{ nombre: "Queso", cantidad: 200, unidad: "g" }],
+                instrucciones: "Paso 1: Hornear"
             };
 
             // 2. ACCIÓN: Enviamos los datos
@@ -94,10 +96,12 @@ describe('', () => {
             // para obligar al código a llegar hasta la base de datos (SP).
             const datosReceta = {
                 nombre_receta: "Pizza Rota",
+                descripcion: "Rica pizza",
                 tiempo_total: 30,
                 porcion: 4, 
                 id_usuario: 1,
-                ingredientes: [{ nombre: "Queso", cantidad: 200, unidad: "g" }]
+                ingredientes: [{ nombre: "Queso", cantidad: 200, unidad: "g" }],
+                instrucciones: "Paso 1: Hornear"
             };
 
             // Ejecutamos y verificamos que el servicio propaga correctamente el error fatal del Procedimiento Almacenado
@@ -106,9 +110,6 @@ describe('', () => {
     });
 
     describe('Funcionalidad 2: BUSCAR RECETAS', () => {
-        
-       
-
         it('Prueba 1: Debe manejar varios requests de búsqueda consistentes para distintos términos', async () => {
             // Requisito de la rúbrica: Hacer varios requests de búsqueda
             recetaService.recetaRepository.buscarTodos.mockImplementation(async (query) => {
@@ -134,7 +135,6 @@ describe('', () => {
     });
 
     describe('Funcionalidad 3: FILTRAR RECETAS (Búsqueda Inversa)', () => {
-        
         it('Prueba 1: Debe calcular correctamente la coincidencia matemática según los ingredientes del usuario', async () => {
             // 1. PREPARACIÓN: Tenemos 2 recetas. 
             // La receta 1 ("Pancho") requiere los ingredientes ID 1 y 2
@@ -210,5 +210,4 @@ describe('', () => {
             expect(resImposible).toHaveLength(0);
         });
     });
-
 });

@@ -122,7 +122,8 @@ class RecetaBuilder {
         });
 
         if (!result.success) {
-            const errores = result.error.errors.map(e => e.message).join(', ');
+            const listaErrores = result.error.issues || result.error.errors || [];
+            const errores = listaErrores.map(e => e.message).join(', ') || "Error desconocido";
             throw new Error(`Receta inválida: ${errores}`);
         }
 
