@@ -1,0 +1,68 @@
+flowchart TB
+    %% Estilos de los nodos
+    classDef client fill:#e1f5fe,stroke:#03a9f4,stroke-width:2px,color:#01579b;
+    classDef server fill:#efebe9,stroke:#8d6e63,stroke-width:2px,color:#3e2723;
+    classDef route fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#f57f17;
+    classDef logic fill:#e8f5e9,stroke:#4caf50,stroke-width:2px,color:#1b5e20;
+    classDef db fill:#ffe0b2,stroke:#ff9800,stroke-width:2px,color:#e65100;
+
+    subgraph CLIENTE ["Cliente - Frontend React.js / Vite"]
+        UI["Capa de Presentacion - React Components y Pages"]
+        FService["Capa de Servicios de Red - api.js / Axios"]
+        UI -->|Invoca funciones de servicio| FService
+    end
+
+    subgraph NETWORK ["Canal de Comunicacion - Internet"]
+        HTTP["Protocolo HTTP - Endpoints REST / JSON"]
+    end
+
+    subgraph SERVIDOR ["Servidor - Backend Node.js / Express"]
+        %% Capa de Entrada y Ruteo
+        Routes["Rutas - routes.js / recetaRoutes.js"]
+        Middlewares["Middlewares - authMiddleware / CORS"]
+        Controllers["Controladores - RecetaController"]
+        
+        %% Capa de Lógica de Negocio
+        Services["Servicios - RecetaService"]
+
+        %% Capa de Dominio / Entidades
+        Models["Modelos de Dominio - Receta.js"]
+        Builders["Patron Builder - RecetaBuilder.js"]
+
+        %% Capa de Acceso a Datos
+        Repositories["Repositorios - RecetaRepository"]
+        DBConnection["Gestor de Conexion - connection.js"]
+
+        %% Relaciones internas del servidor
+        Routes -->|Aplica| Middlewares
+        Middlewares -->|Despacha a| Controllers
+        Controllers -->|Invoca| Services
+        Services -->|Construye| Builders
+        Builders -->|Crea| Models
+        Services -->|Persiste / Recupera datos| Repositories
+        Repositories -->|Obtiene conexion activa| DBConnection
+    end
+
+    subgraph BASE_DATOS ["Persistencia - Base de Datos"]
+        SQLServer[("Microsoft SQL Server - Tablas y Stored Procedures")]
+    end
+
+    %% Relaciones de flujo de datos (Ida)
+    FService -->|Peticion HTTP Request| HTTP
+    HTTP -->|Rutea hacia el Backend| Routes
+    Repositories -->|Ejecuta Queries / Stored Procedures| SQLServer
+    
+    %% Relaciones de flujo de datos (Vuelta)
+    SQLServer -.->|Recordsets de base de datos| Repositories
+    Services -.->|Datos de negocio procesados| Controllers
+    Controllers -.->|Respuesta HTTP JSON Response| HTTP
+    HTTP -.->|Datos JSON| FService
+    FService -.->|Actualiza Estado| UI
+
+    %% Aplicar clases
+    class UI,FService client;
+    class Routes,Middlewares,Controllers route;
+    class Services logic;
+    class Models,Builders logic;
+    class Repositories,DBConnection db;
+    class SQLServer db;

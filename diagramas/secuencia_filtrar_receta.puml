@@ -1,0 +1,39 @@
+@startuml
+skinparam style strictuml
+skinparam monochrome true
+skinparam shadowing false
+
+title Caso de Uso: Filtrar Receta (FiltrarReceta) - Orientado a Objetos
+
+actor "Usuario (Actor)" as Actor
+participant "repositorio : RepositorioRecetas" as RepoObj
+participant "receta : Receta" as RecetaObj
+
+Actor -> RepoObj : filtrar(ingredientesOlla, filtros)
+activate RepoObj
+
+  loop Para cada receta registrada en el sistema
+    RepoObj -> RecetaObj : evaluarCompatibilidad(ingredientesOlla)
+    activate RecetaObj
+    RecetaObj -->> RepoObj : compatible
+    deactivate RecetaObj
+    
+    opt Si la receta es compatible (contiene todos los ingredientes de la olla)
+      RepoObj -> RecetaObj : calcularPorcentajeCoincidencia(ingredientesOlla)
+      activate RecetaObj
+      RecetaObj -->> RepoObj : porcentaje
+      deactivate RecetaObj
+      
+      RepoObj -> RecetaObj : cumpleFiltros(filtros)
+      activate RecetaObj
+      RecetaObj -->> RepoObj : cumple
+      deactivate RecetaObj
+    end
+  end
+  
+  RepoObj -> RepoObj : Filtra recetas incompatibles / que no cumplen\ny ordena el listado por porcentaje descendente
+  
+  RepoObj -->> Actor : resultadosCompatibles
+deactivate RepoObj
+
+@enduml

@@ -1,0 +1,91 @@
+@startuml
+skinparam style strictuml
+skinparam monochrome true
+skinparam shadowing false
+
+title Caso de Uso: Crear Receta (crearReceta) - Orientado a Objetos
+
+actor "Usuario (Actor)" as Actor
+participant "usuario : Usuario" as UserObj
+participant "receta : Receta" as RecetaObj
+participant "ingrediente : Ingrediente" as IngObj
+participant "infoNutri : InformacionNutricional" as NutriObj
+participant "repositorio : RepositorioRecetas" as RepoObj
+
+Actor -> UserObj : crearReceta(nombre, descripcion, porcion, tiempo, dificultad, id_coccion)
+activate UserObj
+  create RecetaObj
+  UserObj -> RecetaObj : new Receta(id_receta, nombre, descripcion, porcion, ..., dificultad, ...)
+  activate RecetaObj
+  RecetaObj -->> UserObj : receta
+  deactivate RecetaObj
+  
+  loop Para cada ingrediente seleccionado
+    Actor -> UserObj : vincular ingrediente con cantidad, unidad y orden
+    UserObj -> RecetaObj : agregarIngrediente(ingrediente, cantidad, unidad, orden)
+    activate RecetaObj
+    RecetaObj -->> UserObj : void
+    deactivate RecetaObj
+  end
+
+  opt Alternativo: auto-calcular información nutricional
+    Actor -> UserObj : solicita auto-calcular nutrición
+    UserObj -> RecetaObj : calcularNutricion()
+    activate RecetaObj
+      
+      loop Para cada ingrediente en la receta
+        RecetaObj -> IngObj : calcularCalorias(cantidad, unidad)
+        activate IngObj
+        IngObj -->> RecetaObj : calorias
+        deactivate IngObj
+        
+        RecetaObj -> IngObj : calcularProteinas(cantidad, unidad)
+        activate IngObj
+        IngObj -->> RecetaObj : proteinas
+        deactivate IngObj
+        
+        RecetaObj -> IngObj : calcularCarbs(cantidad, unidad)
+        activate IngObj
+        IngObj -->> RecetaObj : carbs
+        deactivate IngObj
+        
+        RecetaObj -> IngObj : calcularGrasas(cantidad, unidad)
+        activate IngObj
+        IngObj -->> RecetaObj : grasas
+        deactivate IngObj
+      end
+      
+      create NutriObj
+      RecetaObj -> NutriObj : new InformacionNutricional(protTotales, grasTotales, carbsTotales, calTotales)
+      activate NutriObj
+      NutriObj -->> RecetaObj : infoNutri
+      deactivate NutriObj
+      
+      RecetaObj -->> UserObj : infoNutri
+    deactivate RecetaObj
+    UserObj -->> Actor : muestra información nutricional auto-calculada
+  end
+
+  loop Para cada paso de preparación
+    Actor -> UserObj : ingresa paso de instrucción
+    UserObj -> RecetaObj : agregarInstruccion(num_paso, texto, imagen)
+    activate RecetaObj
+    RecetaObj -->> UserObj : void
+    deactivate RecetaObj
+  end
+
+  Actor -> UserObj : confirma guardar receta
+  UserObj -> RecetaObj : validar()
+  activate RecetaObj
+  RecetaObj -->> UserObj : true
+  deactivate RecetaObj
+  
+  UserObj -> RepoObj : guardar(receta)
+  activate RepoObj
+  RepoObj -->> UserObj : void
+  deactivate RepoObj
+  
+  UserObj -->> Actor : receta guardada con éxito
+deactivate UserObj
+
+@enduml

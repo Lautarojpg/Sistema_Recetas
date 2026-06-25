@@ -1,0 +1,127 @@
+@startuml
+skinparam style strictuml
+skinparam monochrome true
+skinparam shadowing false
+hide empty methods
+
+title Diagrama de Clases de Dominio (Orientado a Objetos) - Sistema de Recetas
+
+enum Dificultad {
+  Fácil
+  Media
+  Difícil
+}
+
+class Usuario {
+  + id_usuario: Integer
+  + nombre: String
+  + apellido: String
+  + email: String
+  + contraseña: String
+  + crearReceta(nombre: String, descripcion: String, porcion: Integer, tiempo: Integer, dificultad: Dificultad, id_coccion: Integer): Receta
+  + autenticar(contraseña: String): Boolean
+}
+
+class Receta {
+  + id_receta: Integer
+  + nombre_receta: String
+  + descripcion: String
+  + porcion: Integer
+  + imagen: String
+  + tiempo_total: Integer
+  + dificultad: Dificultad
+  + fecha_creacion: Date
+  + agregarIngrediente(ingrediente: Ingrediente, cantidad: Decimal, unidad: String, orden: Integer): Void
+  + agregarInstruccion(num_paso: Integer, texto: String, imagen: String): Void
+  + calcularNutricion(): InformacionNutricional
+  + validar(): Boolean
+  + coincideCon(busqueda: String): Boolean
+  + evaluarCompatibilidad(ingredientesOlla: List<Ingrediente>): Boolean
+  + calcularPorcentajeCoincidencia(ingredientesOlla: List<Ingrediente>): Decimal
+  + cumpleFiltros(filtros: Filtros): Boolean
+}
+
+class InformacionNutricional <<ValueObject>> {
+  + proteinas_totales: Decimal
+  + grasas_totales: Decimal
+  + carbs_totales: Decimal
+  + aporte_calorico_total: Decimal
+  + sumarNutrientes(proteinas: Decimal, grasas: Decimal, carbs: Decimal, calorias: Decimal): Void
+  + obtenerResumen(): String
+}
+
+class Instruccion {
+  + num_paso: Integer
+  + texto: String
+  + imagen: String
+  + actualizarTexto(nuevoTexto: String): Void
+}
+
+class Ingrediente {
+  + id_ingrediente: Integer
+  + nombre: String
+  + calorias_por100g: Decimal
+  + proteinas_por100: Decimal
+  + carbs_por100: Decimal
+  + grasas_por100g: Decimal
+  + icono: String
+  + calcularCalorias(cantidad: Decimal, unidad: String): Decimal
+  + calcularProteinas(cantidad: Decimal, unidad: String): Decimal
+  + calcularCarbs(cantidad: Decimal, unidad: String): Decimal
+  + calcularGrasas(cantidad: Decimal, unidad: String): Decimal
+}
+
+class Coccion {
+  + id_coccion: Integer
+  + nombre_tipo: String
+  + descripcion: String
+  + factor_calorico: Decimal
+  + aplicarFactorCalorico(caloriasBase: Decimal): Decimal
+}
+
+class Etiqueta {
+  + id_etiqueta: Integer
+  + nombre_etiqueta: String
+  + actualizarNombre(nuevoNombre: String): Void
+}
+
+class Filtros {
+  + dificultad: Dificultad
+  + tiempoMax: Integer
+  + proteinasMax: Decimal
+  + carbsMax: Decimal
+  + grasasMax: Decimal
+}
+
+class RepositorioRecetas {
+  + recetas: List<Receta>
+  + guardar(receta: Receta): Void
+  + buscar(busqueda: String): List<Receta>
+  + buscarPorUsuario(usuario: Usuario): List<Receta>
+  + obtenerDestacadas(): List<Receta>
+  + filtrar(ingredientes: List<Ingrediente>, filtros: Filtros): List<Receta>
+}
+
+' Relaciones de asociación y composición
+Usuario "1" --> "*" Receta : "crea / administra"
+Receta "1" *--> "*" Instruccion : "se compone de pasos"
+Receta "1" *--> "1" InformacionNutricional : "posee"
+Receta "*" --> "0..1" Coccion : "se clasifica por"
+Ingrediente "*" --> "0..1" Coccion : "se asocia a"
+RepositorioRecetas "1" o--> "*" Receta : "almacena"
+
+Receta "*" -- "*" Ingrediente : "contiene >"
+note on link
+  Atributos de la relación:
+  - cantidad: Decimal
+  - unidad: String
+  - orden: Integer
+end note
+
+Receta "*" -- "*" Etiqueta : "etiquetada con >"
+note on link
+  Atributos de la relación:
+  - prioridad: Integer
+end note
+
+@enduml
