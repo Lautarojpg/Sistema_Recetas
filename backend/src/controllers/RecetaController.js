@@ -7,8 +7,8 @@ class RecetaController {
 
     buscarRecetas = async (req, res) => {
         try {
-            const busqueda = req.query.q || '';
-            const recetas = await this.recetaService.buscarRecetas(busqueda);
+            const terminoBusqueda = req.query.q || '';
+            const recetas = await this.recetaService.buscarRecetas(terminoBusqueda);
             return res.json(recetas);
         } catch (error) {
             console.error("Error al buscar recetas:", error);
@@ -42,9 +42,9 @@ class RecetaController {
 
     crearReceta = async (req, res) => {
         try {
-            const datosReceta = req.body;
-            datosReceta.id_usuario = req.usuario.id_usuario;
-            const result = await this.recetaService.crearReceta(datosReceta);
+            const { nombre_receta, descripcion, porcion, imagen, tiempo_total, dificultad, id_coccion, ingredientes, instrucciones, info_nutricional } = req.body;
+            const id_usuario = req.usuario.id_usuario;
+            const result = await this.recetaService.crearReceta({ nombre_receta, descripcion, porcion, imagen, tiempo_total, dificultad, id_coccion, id_usuario, ingredientes, instrucciones, info_nutricional });
             return res.status(201).json({
                 message: "Receta enviada para revision",
                 id_receta: result.id_receta

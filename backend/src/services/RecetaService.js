@@ -8,44 +8,44 @@ class RecetaService {
         this.ingredienteRepository = new IngredienteRepository();
     }
 
-    async crearReceta(datosReceta) {
+    async crearReceta({ nombre_receta, descripcion, porcion, imagen, tiempo_total, dificultad, id_coccion, id_usuario, ingredientes, instrucciones, info_nutricional }) {
         const errors = {};
 
         // 1. Validar campos básicos
-        if (!datosReceta.nombre_receta || !datosReceta.nombre_receta.trim()) {
+        if (!nombre_receta || !nombre_receta.trim()) {
             errors.nombre_receta = "El nombre de la receta es obligatorio";
         }
-        if (typeof datosReceta.tiempo_total === 'string') {
-            datosReceta.tiempo_total = parseInt(datosReceta.tiempo_total, 10);
+        if (typeof tiempo_total === 'string') {
+            tiempo_total = parseInt(tiempo_total, 10);
         }
-        if (isNaN(datosReceta.tiempo_total) || datosReceta.tiempo_total <= 0) {
+        if (isNaN(tiempo_total) || tiempo_total <= 0) {
             errors.tiempo_total = "Tiempo inválido";
         }
-        if (typeof datosReceta.porcion === 'string') {
-            datosReceta.porcion = parseInt(datosReceta.porcion, 10);
+        if (typeof porcion === 'string') {
+            porcion = parseInt(porcion, 10);
         }
-        if (isNaN(datosReceta.porcion) || datosReceta.porcion <= 0) {
+        if (isNaN(porcion) || porcion <= 0) {
             errors.porcion = "Porción inválida";
         }
-        if (!datosReceta.id_usuario) {
+        if (!id_usuario) {
             errors.usuario = "Usuario inválido";
         }
 
         // 2. Validar y procesar ingredientes
         const ingredientesProcesados = [];
-        if (!Array.isArray(datosReceta.ingredientes) || datosReceta.ingredientes.length === 0) {
+        if (!Array.isArray(ingredientes) || ingredientes.length === 0) {
             errors.ingredientes = "Debe agregar al menos un ingrediente";
         } else {
             // Obtener todos los ingredientes de la base de datos para mapeo e integridad
             const todosLosIngredientes = await this.ingredienteRepository.buscarTodos();
             
-            const nombres = datosReceta.ingredientes.map(i => i.nombre);
+            const nombres = ingredientes.map(i => i.nombre);
             const duplicados = nombres.filter((n, i) => nombres.indexOf(n) !== i && n);
             if (duplicados.length > 0) {
                 errors.ingredientes = "Hay ingredientes duplicados";
             } else {
-                for (let i = 0; i < datosReceta.ingredientes.length; i++) {
-                    const ing = datosReceta.ingredientes[i];
+                for (let i = 0; i < ingredientes.length; i++) {
+                    const ing = ingredientes[i];
                     
                     if (!ing.nombre) {
                         errors.ingredientes = `Ingrediente inválido en la fila ${i + 1}`;
@@ -85,7 +85,7 @@ class RecetaService {
         }
 
         // Extraer valores nutricionales enviados por el frontend
-        const infoNutricional = datosReceta.info_nutricional || {};
+        const infoNutricional = info_nutricional || {};
         const proteinas_totales = Number(infoNutricional.proteinas_totales) || 0;
         const grasas_totales = Number(infoNutricional.grasas_totales) || 0;
         const carbs_totales = Number(infoNutricional.carbs_totales) || 0;
@@ -93,18 +93,18 @@ class RecetaService {
 
         // Crear la entidad de negocio Receta utilizando RecetaBuilder (Patrón Builder)
         const receta = new RecetaBuilder()
-            .setNombre(datosReceta.nombre_receta.trim())
-            .setDescripcion(datosReceta.descripcion ? datosReceta.descripcion.trim() : '')
-            .setPorcion(datosReceta.porcion)
-            .setImagen(datosReceta.imagen || '')
-            .setTiempoTotal(datosReceta.tiempo_total)
-            .setDificultad(datosReceta.dificultad || 'Fácil')
+            .setNombre(nombre_receta.trim())
+            .setDescripcion(descripcion ? descripcion.trim() : '')
+            .setPorcion(porcion)
+            .setImagen(imagen || '')
+            .setTiempoTotal(tiempo_total)
+            .setDificultad(dificultad || 'Fácil')
             .setFechaCreacion(new Date())
             .setNutricion(proteinas_totales, grasas_totales, carbs_totales, aporte_calorico_total)
-            .setCoccion(datosReceta.id_coccion || 1)
-            .setUsuario(datosReceta.id_usuario)
+            .setCoccion(id_coccion || 1)
+            .setUsuario(id_usuario)
             .setIngredientes(ingredientesProcesados)
-            .setInstrucciones(datosReceta.instrucciones || [])
+            .setInstrucciones(instrucciones || [])
             .build();
 
         // Guardar mediante el repositorio
@@ -112,8 +112,8 @@ class RecetaService {
         return { id_receta };
     }
 
-    async buscarRecetas(query = '') {
-        return await this.recetaRepository.buscarTodos(query);
+    async buscarRecetas(terminoBusqueda = '') {
+        return await this.recetaRepository.buscarTodos(terminoBusqueda);
     }
 
     async buscarRecetasPorUsuario(idUsuario) {
